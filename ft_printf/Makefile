@@ -5,13 +5,24 @@
 #                                                     +:+ +:+         +:+      #
 #    By: hyungdki <hyungdki@student.42seoul.kr>     +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
-#    Created: 2023/05/03 20:28:31 by hyungdki          #+#    #+#              #
-#    Updated: 2023/06/07 15:18:00 by hyungdki         ###   ########.fr        #
+#    Created: 2022/12/28 13:30:01 by hyungdki          #+#    #+#              #
+#    Updated: 2023/06/12 15:42:48 by hyungdki         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
-SRCS =	get_next_line.c	\
-		get_next_line_utils.c	\
+SRCS =	ft_printf.c \
+		ft_fprintf.c \
+		ft_printf_utils.c \
+		case_c.c \
+		case_d_and_i.c \
+		case_p.c \
+		case_percent.c \
+		case_s.c \
+		case_u.c \
+		case_x.c \
+		ft_itoa_hex.c \
+		ft_itoa_ptr.c \
+		ft_itoa_unsigned.c
 
 OBJS = 	${SRCS:.c=.o}
 
@@ -19,20 +30,20 @@ CC = cc
 
 CFLAGS = -Wall -Wextra -Werror
 
-NAME = libgnl.a
+NAME = libftprintf.a
 
-TOTAL_OBJS = $(OBJS)
+TOTAL_OBJS = ${OBJS}
 
 ${NAME} : ${TOTAL_OBJS}
-		ar -rsc ${NAME} ${TOTAL_OBJS}
-
+		ar -rsc $@ $^
+	
 %.o :%.c
 	${CC} ${CFLAGS} -c -I. $< -o $@
 
 all : ${NAME}
 
 clean:
-	rm -f $(OBJS) $(OBJS_BONUS)
+	rm -f ${OBJS} ${OBJS_BONUS}
 
 fclean: 
 	@$(MAKE) clean

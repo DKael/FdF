@@ -6,7 +6,7 @@
 /*   By: hyungdki <hyungdki@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/03 20:28:09 by hyungdki          #+#    #+#             */
-/*   Updated: 2023/05/30 14:06:31 by hyungdki         ###   ########.fr       */
+/*   Updated: 2023/06/07 17:10:35 by hyungdki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,6 +54,7 @@ int		ft_strncmp(const char *s1, const char *s2, size_t n);
 char	*ft_strndup(char *src, size_t n);
 char	*ft_strnstr(const char *haystack, const char *needle, size_t len);
 char	*ft_strrchr(const char *s, int c);
+char	*ft_strstr(char *str, char *to_find);
 char	*ft_strtrim(char const *s1, char const *set);
 char	*ft_substr(char const *s, unsigned int start, size_t len);
 int		ft_tolower(int c);

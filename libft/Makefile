@@ -6,7 +6,7 @@
 #    By: hyungdki <hyungdki@student.42seoul.kr>     +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/05/03 20:28:31 by hyungdki          #+#    #+#              #
-#    Updated: 2023/05/30 13:04:29 by hyungdki         ###   ########.fr        #
+#    Updated: 2023/06/07 17:09:05 by hyungdki         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -47,6 +47,7 @@ SRCS =	ft_atoi_int.c \
 		ft_strndup.c \
 		ft_strnstr.c \
 		ft_strrchr.c \
+		ft_strstr.c \
 		ft_strtrim.c \
 		ft_substr.c \
 		ft_tolower.c \

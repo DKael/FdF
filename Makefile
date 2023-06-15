@@ -6,7 +6,7 @@
 #    By: hyungdki <hyungdki@student.42seoul.kr>     +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/05/03 20:30:42 by hyungdki          #+#    #+#              #
-#    Updated: 2023/06/05 17:34:40 by hyungdki         ###   ########.fr        #
+#    Updated: 2023/06/12 18:02:00 by hyungdki         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -28,6 +28,8 @@ LIBFT_DIR = libft
 
 LIBGNL_DIR = gnl
 
+LIBFTPRINTF_DIR = ft_printf
+
 MLX_DIR = minilibx
 
 MLX_DYLIB = libmlx.dylib
@@ -44,7 +46,7 @@ WITH_BONUS = 0
 
 TOTAL_OBJS = ${OBJS}
 
-LDFLAGS = -L./libft -lft -L./gnl -lgnl -L. -lmlx
+LDFLAGS = -L./libft -lft -L./gnl -lgnl -L./ft_printf -lftprintf -L. -lmlx
 
 # ${NAME} : ${TOTAL_OBJS}
 # 		make -C ${LIBFT_DIR} all
@@ -54,9 +56,10 @@ LDFLAGS = -L./libft -lft -L./gnl -lgnl -L. -lmlx
 # 		${CC} ${CFLAGS} ${LDFLAGS} ${TOTAL_OBJS} -o $@
 
 ${NAME} : ${TOTAL_OBJS}
-	make -C ${LIBFT_DIR} all
-	make -C ${LIBGNL_DIR} all
-	make -C ${MLX_DIR} all
+	@make -C ${LIBFT_DIR} all
+	@make -C ${LIBGNL_DIR} all
+	@make -C ${LIBFTPRINTF_DIR} all
+	@make -C ${MLX_DIR} all
 	mv ${MLX_DIR}/${MLX_DYLIB} .
 	${CC} ${LDFLAGS} ${TOTAL_OBJS} -framework OpenGL -framework Appkit -o $@
 
@@ -68,6 +71,7 @@ all : ${NAME}
 clean:
 	make -C ${LIBFT_DIR} fclean
 	make -C ${LIBGNL_DIR} fclean
+	make -C ${LIBFTPRINTF_DIR} fclean
 	make -C ${MLX_DIR} clean
 	rm -f ${OBJS} ${OBJS_BONUS}
 

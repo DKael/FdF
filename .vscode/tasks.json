@@ -14,6 +14,8 @@
                 "-lgnl",
                 "-L.",
                 "-lmlx",
+                "-L./ft_printf",
+                "-lftprintf",
                 "-framework", "OpenGL",
                 "-framework", "Appkit",
                 "${file}",
