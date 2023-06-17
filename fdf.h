@@ -6,7 +6,7 @@
 /*   By: hyungdki <hyungdki@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/30 17:58:15 by hyungdki          #+#    #+#             */
-/*   Updated: 2023/06/14 21:44:30 by hyungdki         ###   ########.fr       */
+/*   Updated: 2023/06/17 19:18:14 by hyungdki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,12 +30,12 @@
 
 # define T_NULL (void *)0 
 # define WINDOW_SIZE_X 1280
-# define WINDOW_SIZE_Y 720
+# define WINDOW_SIZE_Y 1024
 # define ISO_X 0.866025
 # define ISO_Y 0.6
 
-static const char	*program_name;
-static const char	*file_name;
+static const char	*g_program_name;
+static const char	*g_file_name;
 
 typedef int t_bool;
 typedef struct s_fdf
@@ -62,6 +62,8 @@ typedef struct s_point
 	int		x;
 	int		y;
 	int 	z;
+	int		rx_2d;
+	int		ry_2d;
 	double	x_2d;
 	double	y_2d;
 	t_color	color;
@@ -74,19 +76,23 @@ typedef struct s_map
 	int		col;
 	int		midpoint_x;
 	int		midpoint_y;
-	double	largest_abs_x_2d;
-	double	largest_abs_y_2d;
-	double	basic_len;
+	double		largest_x_2d;
+	double		largest_y_2d;
+	double		smallest_x_2d;
+	double		smallest_y_2d;
+	double		len_x_2d;
+	double		len_y_2d;
+	double		basic_len;
 	int		fd;
 }	t_map;
 
 void my_mlx_pixel_put(t_fdf *fdf, int x, int y, int color);
-unsigned int create_trgb(unsigned char t, unsigned char r, unsigned char g, unsigned char b);
-unsigned char get_t(int trgb);
-unsigned char get_r(int trgb);
-unsigned char get_g(int trgb);
-unsigned char get_b(int trgb);
-void fdf_init(t_fdf *fdf, t_map *map);
+// unsigned int create_trgb(unsigned char t, unsigned char r, unsigned char g, unsigned char b);
+// unsigned char get_t(int trgb);
+// unsigned char get_r(int trgb);
+// unsigned char get_g(int trgb);
+// unsigned char get_b(int trgb);
+void fdf_init(t_fdf *fdf);
 void map_init(t_map *map);
 void err_msg(const char *msg, int exit_code, t_bool use_perror);
 void free_2d_array(void **array);
