@@ -6,7 +6,7 @@
 /*   By: hyungdki <hyungdki@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/08 20:17:25 by dmkael            #+#    #+#             */
-/*   Updated: 2023/06/12 15:36:04 by hyungdki         ###   ########.fr       */
+/*   Updated: 2023/06/18 16:54:37 by hyungdki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,9 +19,10 @@
 # define PLUS_FLAG	8
 # define ZERO_FLAG	16
 # define PRECISION	32
-
-# define TRUE 1
-# define FALSE 0
+# if !defined(TRUE) && !defined(FALSE)
+#  define TRUE 1
+#  define FALSE 0
+# endif
 
 # include <stdarg.h>
 # include <stdlib.h>

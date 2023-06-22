@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: hyungdki <hyungdki@student.42seoul.kr>     +#+  +:+       +#+         #
+#    By: hyungdki <hyungdki@student.42seoul>        +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/05/03 20:28:31 by hyungdki          #+#    #+#              #
-#    Updated: 2023/06/07 15:18:00 by hyungdki         ###   ########.fr        #
+#    Updated: 2023/06/17 20:29:32 by hyungdki         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -27,7 +27,7 @@ ${NAME} : ${TOTAL_OBJS}
 		ar -rsc ${NAME} ${TOTAL_OBJS}
 
 %.o :%.c
-	${CC} ${CFLAGS} -c -I. $< -o $@
+	@${CC} ${CFLAGS} -c -I. $< -o $@
 
 all : ${NAME}
 

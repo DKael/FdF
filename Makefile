@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: hyungdki <hyungdki@student.42seoul.kr>     +#+  +:+       +#+         #
+#    By: hyungdki <hyungdki@student.42seoul>        +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/05/03 20:30:42 by hyungdki          #+#    #+#              #
-#    Updated: 2023/06/12 18:02:00 by hyungdki         ###   ########.fr        #
+#    Updated: 2023/06/17 20:29:13 by hyungdki         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -56,10 +56,10 @@ LDFLAGS = -L./libft -lft -L./gnl -lgnl -L./ft_printf -lftprintf -L. -lmlx
 # 		${CC} ${CFLAGS} ${LDFLAGS} ${TOTAL_OBJS} -o $@
 
 ${NAME} : ${TOTAL_OBJS}
-	@make -C ${LIBFT_DIR} all
-	@make -C ${LIBGNL_DIR} all
-	@make -C ${LIBFTPRINTF_DIR} all
-	@make -C ${MLX_DIR} all
+	make -C ${LIBFT_DIR} all
+	make -C ${LIBGNL_DIR} all
+	make -C ${LIBFTPRINTF_DIR} all
+	make -C ${MLX_DIR} all
 	mv ${MLX_DIR}/${MLX_DYLIB} .
 	${CC} ${LDFLAGS} ${TOTAL_OBJS} -framework OpenGL -framework Appkit -o $@
 

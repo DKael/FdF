@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   get_next_line.h                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hyungdki <hyungdki@student.42seoul>        +#+  +:+       +#+        */
+/*   By: hyungdki <hyungdki@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/23 17:23:40 by hyungdki          #+#    #+#             */
-/*   Updated: 2023/06/15 12:32:03 by hyungdki         ###   ########.fr       */
+/*   Updated: 2023/06/18 16:47:00 by hyungdki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,9 @@
 # include <unistd.h>
 # include <stdlib.h>
 
-# define T_NULL (void *)0
+# ifndef T_NULL
+#  define T_NULL (void *)0
+# endif
 
 typedef struct s_fd_node
 {

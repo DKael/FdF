@@ -6,7 +6,7 @@
 /*   By: hyungdki <hyungdki@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/30 17:58:08 by hyungdki          #+#    #+#             */
-/*   Updated: 2023/06/17 19:52:46 by hyungdki         ###   ########.fr       */
+/*   Updated: 2023/06/22 21:58:58 by hyungdki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -155,6 +155,43 @@ int press_cross_on_window_frame(t_fdf *fdf)
 	exit(0);
 }
 
+t_bool is_flat(t_point p1, t_point p2, t_point p3, t_point p4)
+{
+	if ((p2.x - p1.x == p4.x - p3.x && p2.y - p1.y == p4.y - p3.y && p2.z - p1.z == p4.z - p3.z) && (p1.x - p3.x == p2.x - p4.x && p1.y - p3.y == p2.y - p4.y && p1.z - p3.z == p2.z - p4.z))
+		return (TRUE);
+	else
+		return (FALSE);
+}
+
+void draw(t_fdf *fdf, t_map *map, int r, int c)
+{
+	int z00;
+	int z01;
+	int z10;
+	int z11;
+
+	z00 = map->map[r][c].z;
+	z01 = map->map[r][c + 1].z;
+	z10 = map->map[r + 1][c].z;
+	z11 = map->map[r + 1][c + 1].z;
+	if ((z00 == z01 && z00 == z10 && z00 != z11) || (z11 == z01 && z11 == z10 && z11 != z00))
+		draw_line(fdf, map->map[r][c], map->map[r + 1][c + 1]);
+	else if ((z01 == z00 && z01 == z11 && z01 != z10) || (z10 == z00 && z10 == z11 && z10 != z01))
+		draw_line(fdf, map->map[r][c + 1], map->map[r + 1][c]);
+	else if (z00 < z01 && z00 < z10 && z11 < z01 && z11 < z10)
+		draw_line(fdf, map->map[r][c], map->map[r + 1][c + 1]);
+	else if (z10 < z11 && z10 < z00 && z01 < z11 && z01 < z00)
+		draw_line(fdf, map->map[r][c + 1], map->map[r + 1][c]);
+	else if ((z10 < z11 && z10 < z00 && z01 > z11 && z01 > z00) || (z10 > z11 && z10 > z00 && z01 < z11 && z01 < z00))
+		draw_line(fdf, map->map[r][c], map->map[r + 1][c + 1]);
+	else if ((z00 < z01 && z00 < z10 && z11 > z01 && z11 > z10) || (z00 > z01 && z00 > z10 && z11 < z01 && z11 < z10))
+		draw_line(fdf, map->map[r][c + 1], map->map[r + 1][c]);
+	else if ((z00 >= z01 && z01 >= z11 && z11 >= z10) || (z00 >= z10 && z10 >= z11 && z11 >= z01) || (z11 >= z10 && z10 >= z00 && z00 >= z01) || (z11 >= z01 && z01 >= z00 && z00 >= z10))
+		draw_line(fdf, map->map[r][c + 1], map->map[r + 1][c]);
+	else if ((z01 >= z11 && z11 >= z10 && z10 >= z00) || (z01 >= z00 && z00 >= z10 && z10 >= z11) || (z10 >= z00 && z00 >= z01 && z01 >= z11) || (z10 >= z11 && z11 >= z01 && z01 >= z00))
+		draw_line(fdf, map->map[r][c], map->map[r + 1][c + 1]);
+}
+
 void fdf()
 {
 	t_map map;
@@ -195,7 +232,7 @@ void fdf()
 			if (map.map[r][c].y_2d > map.largest_y_2d)
 				map.largest_y_2d = map.map[r][c].y_2d;
 			else if (map.map[r][c].y_2d < map.smallest_y_2d)
-				map.smallest_y_2d = map.map[r][c].y_2d; 
+				map.smallest_y_2d = map.map[r][c].y_2d;
 		}
 	}
 	map.len_x_2d = map.largest_x_2d - map.smallest_x_2d;
@@ -204,8 +241,8 @@ void fdf()
 		map.basic_len = WINDOW_SIZE_X / map.len_x_2d;
 	else
 		map.basic_len = WINDOW_SIZE_Y / map.len_y_2d;
-	map.midpoint_x = WINDOW_SIZE_X / 2 - (int)((map.largest_x_2d + map.smallest_x_2d) * map.basic_len) / 2;
-	map.midpoint_y = WINDOW_SIZE_Y / 2 - (int)((map.largest_y_2d + map.smallest_y_2d) * map.basic_len) / 2;
+	map.midpoint_x_2d = WINDOW_SIZE_X / 2 - (int)((map.largest_x_2d + map.smallest_x_2d) * map.basic_len) / 2;
+	map.midpoint_y_2d = WINDOW_SIZE_Y / 2 - (int)((map.largest_y_2d + map.smallest_y_2d) * map.basic_len) / 2;
 
 	fdf_init(&fdf);
 
@@ -217,9 +254,9 @@ void fdf()
 		while (++c < map.col)
 		{
 			map.map[r][c].x_2d = map.map[r][c].x_2d * map.basic_len;
-			map.map[r][c].rx_2d = (int)(map.map[r][c].x_2d + 0.5) + map.midpoint_x;
+			map.map[r][c].rx_2d = (int)(map.map[r][c].x_2d + 0.5) + map.midpoint_x_2d;
 			map.map[r][c].y_2d = map.map[r][c].y_2d * map.basic_len;
-			map.map[r][c].ry_2d = (int)(map.map[r][c].y_2d + 0.5) + map.midpoint_y;
+			map.map[r][c].ry_2d = (int)(map.map[r][c].y_2d + 0.5) + map.midpoint_y_2d;
 		}
 	}
 
@@ -242,6 +279,20 @@ void fdf()
 		}
 		if (r < map.row - 1)
 			draw_line(&fdf, map.map[r][c], map.map[r + 1][c]);
+	}
+
+	r = -1;
+	c = -1;
+	while (++r < map.row - 1)
+	{
+		c = -1;
+		while (++c < map.col - 1)
+		{
+			if (!is_flat(map.map[r][c], map.map[r][c + 1], map.map[r + 1][c], map.map[r + 1][c + 1]))
+			{
+				draw(&fdf, &map, r, c);
+			}
+		}
 	}
 
 	mlx_put_image_to_window(fdf.mlx_ptr, fdf.win_ptr, fdf.img_ptr, 0, 0);
@@ -276,33 +327,25 @@ void draw_line(t_fdf *fdf, t_point p1, t_point p2)
 
 t_color *calc_color(t_point sp, t_point bp, int np)
 {
-	int dt;
-	int dr;
-	int dg;
-	int db;
+	double color_dif[4];
 	t_color *color_box;
 	int idx;
+	int idx1;
 
 	color_box = (t_color *)malloc(sizeof(t_color) * np);
 	if (color_box == NULL)
 	{
 		err_msg("malloc error!", 1, FALSE);
 	}
-	dt = (bp.color.trgb[0] - sp.color.trgb[0]) / np;
-	dr = (bp.color.trgb[1] - sp.color.trgb[1]) / np;
-	dg = (bp.color.trgb[2] - sp.color.trgb[2]) / np;
-	db = (bp.color.trgb[3] - sp.color.trgb[3]) / np;
-	color_box[0].trgb[0] = sp.color.trgb[0] + dt;
-	color_box[0].trgb[1] = sp.color.trgb[1] + dr;
-	color_box[0].trgb[2] = sp.color.trgb[2] + dg;
-	color_box[0].trgb[3] = sp.color.trgb[3] + db;
-	idx = 0;
-	while (++idx < np)
+	idx = -1;
+	while (++idx < 4)
+		color_dif[idx] = ((int)bp.color.trgb[idx] - (int)sp.color.trgb[idx]) / (double)np;
+	idx1 = -1;
+	while (++idx1 < np)
 	{
-		color_box[idx].trgb[0] = color_box[idx - 1].trgb[0] + dt;
-		color_box[idx].trgb[1] = color_box[idx - 1].trgb[1] + dr;
-		color_box[idx].trgb[2] = color_box[idx - 1].trgb[2] + dg;
-		color_box[idx].trgb[3] = color_box[idx - 1].trgb[3] + db;
+		idx = -1;
+		while (++idx < 4)
+			color_box[idx1].trgb[idx] = (unsigned char)((double)sp.color.trgb[idx] + color_dif[idx] * (idx1 + 1) + 0.5);
 	}
 	return color_box;
 }

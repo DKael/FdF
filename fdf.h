@@ -6,7 +6,7 @@
 /*   By: hyungdki <hyungdki@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/30 17:58:15 by hyungdki          #+#    #+#             */
-/*   Updated: 2023/06/17 19:18:14 by hyungdki         ###   ########.fr       */
+/*   Updated: 2023/06/19 20:02:26 by hyungdki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,15 +24,17 @@
 # include "libft/libft.h"
 # include "ft_printf/ft_printf.h"
 
-
-# include <errno.h>
-
-
-# define T_NULL (void *)0 
 # define WINDOW_SIZE_X 1280
 # define WINDOW_SIZE_Y 1024
 # define ISO_X 0.866025
-# define ISO_Y 0.6
+# define ISO_Y 0.7
+# if !defined(TRUE) && !defined(FALSE)
+#  define TRUE 1
+#  define FALSE 0
+# endif
+# ifndef T_NULL
+#  define T_NULL (void *)0
+# endif
 
 static const char	*g_program_name;
 static const char	*g_file_name;
@@ -59,9 +61,9 @@ typedef union u_color
 
 typedef struct s_point
 {
-	int		x;
-	int		y;
-	int 	z;
+	double		x;
+	double		y;
+	double 		z;
 	int		rx_2d;
 	int		ry_2d;
 	double	x_2d;
@@ -74,8 +76,10 @@ typedef struct s_map
 	t_point	**map;
 	int		row;
 	int		col;
-	int		midpoint_x;
-	int		midpoint_y;
+	int		smallest_z;
+	int		largest_z;
+	int		midpoint_x_2d;
+	int		midpoint_y_2d;
 	double		largest_x_2d;
 	double		largest_y_2d;
 	double		smallest_x_2d;
