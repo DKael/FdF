@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   fdf.h                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hyungdki <hyungdki@student.42seoul.kr>     +#+  +:+       +#+        */
+/*   By: hyungdki <hyungdki@student.42seoul>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/30 17:58:15 by hyungdki          #+#    #+#             */
-/*   Updated: 2023/06/26 21:11:18 by hyungdki         ###   ########.fr       */
+/*   Updated: 2023/06/26 22:26:50 by hyungdki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,10 +36,7 @@
 #  define T_NULL (void *)0
 # endif
 
-static const char	*g_program_name;
-static const char	*g_file_name;
-
-typedef int t_bool;
+typedef int	t_bool;
 typedef struct s_fdf
 {
 	void	*mlx_ptr;
@@ -63,7 +60,7 @@ typedef struct s_point
 {
 	double		x;
 	double		y;
-	double 		z;
+	double		z;
 	int			rx_2d;
 	int			ry_2d;
 	double		x_2d;
@@ -90,7 +87,6 @@ typedef struct s_map
 	int			fd;
 }	t_map;
 
-
 // draw_diagonal1.c
 void			draw_line_diagonal(t_fdf *fdf, t_map *map, int r, int c);
 t_bool			is_flat(t_point p1, t_point p2, t_point p3, t_point p4);
@@ -106,7 +102,8 @@ void			draw_line(t_fdf *fdf, t_point p1, t_point p2);
 void			draw_vertical_line(t_fdf *fdf, t_point p1, t_point p2);
 void			draw_horizontal_line(t_fdf *fdf, t_point p1, t_point p2);
 void			draw_line_slope_abs1(t_fdf *fdf, t_point p1, t_point p2);
-void			draw_line_slope_abs2(t_fdf *fdf, t_point sxp, t_point bxp, int y);
+void			draw_line_slope_abs2(t_fdf *fdf, t_point sxp,
+					t_point bxp, int y);
 //draw2.c
 void			draw_line_move_x1(t_fdf *fdf, t_point p1, t_point p2);
 void			draw_line_move_x2(t_fdf *fdf, t_point sxp, t_point bxp);
@@ -119,10 +116,11 @@ t_color			*calc_color(t_point sp, t_point bp, int np);
 void			err_msg(const char *msg, int exit_code, t_bool use_perror);
 void			map_parsing_on_error(t_map *map, char **split_result);
 // event.c
+void			err_init(char **argv);
 int				quit_program(int keycode, t_fdf *fdf);
 int				press_cross_on_window_frame(t_fdf *fdf);
 // fdf1.c
-void			fdf1(void);
+void			fdf1(char **argv);
 void			fdf2(t_fdf *fdf, t_map *map);
 // fdf2.c
 void			convert_point(t_map *map);
@@ -130,11 +128,13 @@ void			calc_win_size(t_map *map);
 void			enlarge_image(t_map *map);
 void			draw(t_fdf *fdf, t_map *map);
 // map_parsing.c
-t_map			map_parsing1(void);
-void			map_parsing2(t_map *map);
+t_map			map_parsing1(char **argv);
+void			map_parsing2(t_map *map, char **argv);
 void			map_parsing3(t_map *map, char **split_result, int *r_idx);
-void			mp_make_row(t_map *map, int *r_idx, int s_idx, char **split_result);
-void			mp_make_row_color(t_map *map, int *r_idx, int s_idx, char **s_result);
+void			mp_make_row(t_map *map, int *r_idx,
+					int s_idx, char **split_result);
+void			mp_make_row_color(t_map *map, int *r_idx,
+					int s_idx, char **s_result);
 // util.c
 void			free_2d_array(void **array);
 unsigned int	hex_str_to_uint(char *str_color);

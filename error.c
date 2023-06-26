@@ -3,14 +3,21 @@
 /*                                                        :::      ::::::::   */
 /*   error.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hyungdki <hyungdki@student.42seoul.kr>     +#+  +:+       +#+        */
+/*   By: hyungdki <hyungdki@student.42seoul>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/26 19:35:27 by hyungdki          #+#    #+#             */
-/*   Updated: 2023/06/26 19:47:09 by hyungdki         ###   ########.fr       */
+/*   Updated: 2023/06/26 22:24:44 by hyungdki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "fdf.h"
+
+static const char	*g_program_name;
+
+void	err_init(char **argv)
+{
+	g_program_name = argv[0];
+}
 
 void	err_msg(const char *msg, int exit_code, t_bool use_perror)
 {

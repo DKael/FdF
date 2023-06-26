@@ -4,6 +4,7 @@
 		"unistd.h": "c",
 		"libft.h": "c",
 		"get_next_line.h": "c",
-		"fdf.h": "c"
+		"fdf.h": "c",
+		"stdio.h": "c"
 	}
 }

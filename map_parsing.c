@@ -3,25 +3,25 @@
 /*                                                        :::      ::::::::   */
 /*   map_parsing.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hyungdki <hyungdki@student.42seoul.kr>     +#+  +:+       +#+        */
+/*   By: hyungdki <hyungdki@student.42seoul>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/26 19:35:35 by hyungdki          #+#    #+#             */
-/*   Updated: 2023/06/26 20:02:06 by hyungdki         ###   ########.fr       */
+/*   Updated: 2023/06/26 22:23:14 by hyungdki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "fdf.h"
 
-t_map	map_parsing1(void)
+t_map	map_parsing1(char **argv)
 {
 	t_map	map;
 	char	*buffer;
 
 	map_init(&map);
 	buffer = T_NULL;
-	map.fd = open(g_file_name, O_RDONLY);
+	map.fd = open(argv[1], O_RDONLY);
 	if (map.fd == -1)
-		err_msg(g_file_name, 1, TRUE);
+		err_msg(argv[1], 1, TRUE);
 	while (1)
 	{
 		buffer = get_next_line(map.fd);
@@ -36,22 +36,22 @@ t_map	map_parsing1(void)
 	map.map = (t_point **)ft_calloc(map.row + 1, sizeof(t_point *));
 	if (map.map == T_NULL)
 		err_msg("malloc error!", 1, FALSE);
-	map_parsing2(&map);
+	map_parsing2(&map, argv);
 	close(map.fd);
 	return (map);
 }
 
-void	map_parsing2(t_map *map)
+void	map_parsing2(t_map *map, char **argv)
 {
 	int		map_r_idx;
 	char	**split_result;
 	char	*buffer;
 
-	map->fd = open(g_file_name, O_RDONLY);
+	map->fd = open(argv[1], O_RDONLY);
 	if (map->fd == -1)
 	{
 		free(map->map);
-		err_msg(g_file_name, 1, TRUE);
+		err_msg(argv[1], 1, TRUE);
 	}
 	map_r_idx = -1;
 	while (1)

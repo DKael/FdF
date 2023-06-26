@@ -3,21 +3,21 @@
 /*                                                        :::      ::::::::   */
 /*   fdf1.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hyungdki <hyungdki@student.42seoul.kr>     +#+  +:+       +#+        */
+/*   By: hyungdki <hyungdki@student.42seoul>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/26 20:27:35 by hyungdki          #+#    #+#             */
-/*   Updated: 2023/06/26 21:11:13 by hyungdki         ###   ########.fr       */
+/*   Updated: 2023/06/26 22:26:28 by hyungdki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "fdf.h"
 
-void	fdf1(void)
+void	fdf1(char **argv)
 {
 	t_map	map;
 	t_fdf	fdf;
 
-	map = map_parsing1();
+	map = map_parsing1(argv);
 	convert_point(&map);
 	calc_win_size(&map);
 	fdf_init(&fdf);
