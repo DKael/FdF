@@ -1,26 +1,29 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   event.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: hyungdki <hyungdki@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/05/30 17:58:08 by hyungdki          #+#    #+#             */
-/*   Updated: 2023/06/26 21:02:06 by hyungdki         ###   ########.fr       */
+/*   Created: 2023/06/26 19:47:42 by hyungdki          #+#    #+#             */
+/*   Updated: 2023/06/26 19:48:24 by hyungdki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "fdf.h"
 
-int	main(int argc, char **argv)
+int	quit_program(int keycode, t_fdf *fdf)
 {
-	if (argc != 2)
+	if (keycode == 53)
 	{
-		ft_printf("Usage : %s <filename>\n", argv[0]);
-		return (1);
+		mlx_destroy_window(fdf->mlx_ptr, fdf->win_ptr);
+		exit(0);
 	}
-	g_program_name = argv[0];
-	g_file_name = argv[1];
-	fdf1();
 	return (0);
+}
+
+int	press_cross_on_window_frame(t_fdf *fdf)
+{
+	mlx_destroy_window(fdf->mlx_ptr, fdf->win_ptr);
+	exit(0);
 }

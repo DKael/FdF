@@ -3,14 +3,25 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: hyungdki <hyungdki@student.42seoul>        +#+  +:+       +#+         #
+#    By: hyungdki <hyungdki@student.42seoul.kr>     +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/05/03 20:30:42 by hyungdki          #+#    #+#              #
-#    Updated: 2023/06/17 20:29:13 by hyungdki         ###   ########.fr        #
+#    Updated: 2023/06/26 20:54:33 by hyungdki         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 SRCS =	main.c	\
+		draw_diagonal1.c  \
+		draw_diagonal2.c  \
+		draw1.c  \
+		draw2.c  \
+		draw3.c  \
+		error.c  \
+		event.c  \
+		fdf1.c  \
+		fdf2.c  \
+		map_parsing.c  \
+		util.c  \
 		
 OBJS = 	${SRCS:.c=.o}
 

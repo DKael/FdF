@@ -3,6 +3,7 @@
 		"ft_printf.h": "c",
 		"unistd.h": "c",
 		"libft.h": "c",
-		"get_next_line.h": "c"
+		"get_next_line.h": "c",
+		"fdf.h": "c"
 	}
 }
