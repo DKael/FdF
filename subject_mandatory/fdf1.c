@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   fdf1.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hyungdki <hyungdki@student.42seoul>        +#+  +:+       +#+        */
+/*   By: hyungdki <hyungdki@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/26 20:27:35 by hyungdki          #+#    #+#             */
-/*   Updated: 2023/06/26 22:28:42 by hyungdki         ###   ########.fr       */
+/*   Updated: 2023/06/27 13:44:05 by hyungdki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ void	fdf1(char **argv)
 	map = map_parsing1(argv);
 	convert_point(&map);
 	calc_win_size(&map);
-	fdf_init(&fdf);
+	fdf_init(&fdf, &map);
 	enlarge_image(&map);
 	fdf.mlx_ptr = mlx_init();
 	if (fdf.mlx_ptr == T_NULL)

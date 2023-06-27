@@ -6,7 +6,7 @@
 /*   By: hyungdki <hyungdki@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/30 17:58:15 by hyungdki          #+#    #+#             */
-/*   Updated: 2023/06/27 13:19:41 by hyungdki         ###   ########.fr       */
+/*   Updated: 2023/06/27 15:19:30 by hyungdki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,18 +37,6 @@
 # endif
 
 typedef int	t_bool;
-typedef struct s_fdf
-{
-	void	*mlx_ptr;
-	void	*win_ptr;
-	void	*img_ptr;
-	char	*img_addr;
-	int		win_size_x;
-	int		win_size_y;
-	int		bpp;
-	int		size_line;
-	int		endian;
-}	t_fdf;
 
 typedef union u_color
 {
@@ -61,10 +49,10 @@ typedef struct s_point
 	double		x;
 	double		y;
 	double		z;
-	int			rx_2d;
-	int			ry_2d;
-	double		x_2d;
-	double		y_2d;
+	int			rx2d;
+	int			ry2d;
+	double		x2d;
+	double		y2d;
 	t_color		color;
 }	t_point;
 
@@ -73,17 +61,31 @@ typedef struct s_map
 	t_point		**map;
 	int			row;
 	int			col;
-	int			midpoint_x_2d;
-	int			midpoint_y_2d;
-	double		largest_x_2d;
-	double		largest_y_2d;
-	double		smallest_x_2d;
-	double		smallest_y_2d;
-	double		len_x_2d;
-	double		len_y_2d;
+	int			midpoint_x2d;
+	int			midpoint_y2d;
+	double		largest_x2d;
+	double		largest_y2d;
+	double		smallest_x2d;
+	double		smallest_y2d;
+	double		len_x2d;
+	double		len_y2d;
 	double		basic_len;
 	int			fd;
 }	t_map;
+
+typedef struct s_fdf
+{
+	void	*mlx_ptr;
+	void	*win_ptr;
+	void	*img_ptr;
+	char	*img_addr;
+	int		win_size_x;
+	int		win_size_y;
+	int		bpp;
+	int		size_line;
+	int		endian;
+	t_map	*map_ptr;
+}	t_fdf;
 
 // draw_diagonal1.c
 void			draw_line_diagonal(t_fdf *fdf, t_map *map, int r, int c);
@@ -111,10 +113,10 @@ void			draw_line_move_y2(t_fdf *fdf, t_point syp, t_point byp);
 void			mlx_pixel_put_at_mem(t_fdf *fdf, int x, int y, int color);
 t_color			*calc_color(t_point sp, t_point bp, int np);
 // error.c
+void			err_init(char **argv);
 void			err_msg(const char *msg, int exit_code, t_bool use_perror);
 void			map_parsing_on_error(t_map *map, char **split_result);
 // event.c
-void			err_init(char **argv);
 int				quit_program(int keycode, t_fdf *fdf);
 int				press_cross_on_window_frame(t_fdf *fdf);
 // fdf1.c
@@ -136,7 +138,7 @@ void			mp_make_row_color(t_map *map, int *r_idx,
 // util.c
 void			free_2d_array(void **array);
 unsigned int	hex_str_to_uint(char *str_color);
-void			fdf_init(t_fdf *fdf);
+void			fdf_init(t_fdf *fdf, t_map *map);
 void			map_init(t_map *map);
 
 #endif

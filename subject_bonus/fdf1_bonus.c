@@ -6,7 +6,7 @@
 /*   By: hyungdki <hyungdki@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/26 20:27:35 by hyungdki          #+#    #+#             */
-/*   Updated: 2023/06/27 13:14:54 by hyungdki         ###   ########.fr       */
+/*   Updated: 2023/06/27 20:59:13 by hyungdki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,8 +19,8 @@ void	fdf1(char **argv)
 
 	map = map_parsing1(argv);
 	convert_point(&map);
-	calc_win_size(&map);
-	fdf_init(&fdf);
+	calc_win_size1(&map);
+	fdf_init(&fdf, &map);
 	enlarge_image(&map);
 	fdf.mlx_ptr = mlx_init();
 	if (fdf.mlx_ptr == T_NULL)
@@ -29,8 +29,29 @@ void	fdf1(char **argv)
 		exit(1);
 	}
 	fdf2(&fdf, &map);
-	free_2d_array((void *)map.map);
 }
+
+int	loop_func(t_fdf *fdf)
+{
+	if (fdf->loc_change == TRUE || fdf->zoom_change == TRUE || fdf->rotate_change == TRUE)
+	{
+		if (fdf->rotate_change == TRUE)
+		{
+			rotate_point(fdf->map_ptr, fdf->alpha, fdf->beta);
+			enlarge_image(fdf->map_ptr);
+		}
+		else if (fdf->zoom_change == TRUE)
+			enlarge_image(fdf->map_ptr);
+		screen_clear(fdf);
+		draw(fdf, fdf->map_ptr);
+		mlx_put_image_to_window(fdf->mlx_ptr, fdf->win_ptr, fdf->img_ptr, 0, 0);
+		fdf->loc_change = FALSE;
+		fdf->zoom_change = FALSE;
+		fdf->rotate_change = FALSE;
+	}
+	return (0);
+}
+
 
 void	fdf2(t_fdf *fdf, t_map *map)
 {
@@ -45,14 +66,16 @@ void	fdf2(t_fdf *fdf, t_map *map)
 			fdf->win_size_x, fdf->win_size_y);
 	if (fdf->img_ptr == T_NULL)
 	{
-		free_2d_array((void *)map->map);
+		free_2d_array((void *)map->map); 
 		exit(1);
 	}
 	fdf->img_addr = mlx_get_data_addr(fdf->img_ptr,
 			&(fdf->bpp), &(fdf->size_line), &(fdf->endian));
-	draw(fdf, map);
+	draw(fdf, fdf->map_ptr);
 	mlx_put_image_to_window(fdf->mlx_ptr, fdf->win_ptr, fdf->img_ptr, 0, 0);
-	mlx_key_hook(fdf->win_ptr, quit_program, fdf);
+	mlx_hook(fdf->win_ptr, 2, 0, key_event, fdf);
 	mlx_hook(fdf->win_ptr, 17, 0, press_cross_on_window_frame, fdf);
+	mlx_hook(fdf->win_ptr, 4, 0, mouse_event, fdf);
+	mlx_loop_hook(fdf->mlx_ptr, loop_func, fdf);
 	mlx_loop(fdf->mlx_ptr);
 }

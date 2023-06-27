@@ -6,7 +6,7 @@
 /*   By: hyungdki <hyungdki@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/26 19:36:24 by hyungdki          #+#    #+#             */
-/*   Updated: 2023/06/26 19:47:05 by hyungdki         ###   ########.fr       */
+/*   Updated: 2023/06/27 13:53:04 by hyungdki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,7 @@ unsigned int	hex_str_to_uint(char *str_color)
 	return (result);
 }
 
-void	fdf_init(t_fdf *fdf)
+void	fdf_init(t_fdf *fdf, t_map *map)
 {
 	fdf->mlx_ptr = T_NULL;
 	fdf->win_ptr = T_NULL;
@@ -57,6 +57,7 @@ void	fdf_init(t_fdf *fdf)
 	fdf->img_addr = T_NULL;
 	fdf->win_size_x = WINDOW_SIZE_X;
 	fdf->win_size_y = WINDOW_SIZE_Y;
+	fdf->map_ptr = map;
 }
 
 void	map_init(t_map *map)
@@ -65,8 +66,8 @@ void	map_init(t_map *map)
 	map->row = 0;
 	map->col = 0;
 	map->fd = -1;
-	map->largest_x_2d = (WINDOW_SIZE_X / 2) * -1;
-	map->largest_y_2d = (WINDOW_SIZE_Y / 2) * -1;
-	map->smallest_x_2d = WINDOW_SIZE_X / 2;
-	map->smallest_y_2d = WINDOW_SIZE_Y / 2;
+	map->largest_x2d = (WINDOW_SIZE_X / 2) * -1;
+	map->largest_y2d = (WINDOW_SIZE_Y / 2) * -1;
+	map->smallest_x2d = WINDOW_SIZE_X / 2;
+	map->smallest_y2d = WINDOW_SIZE_Y / 2;
 }
