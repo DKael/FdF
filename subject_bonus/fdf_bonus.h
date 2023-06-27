@@ -1,17 +1,17 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   fdf.h                                              :+:      :+:    :+:   */
+/*   fdf_bonus.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hyungdki <hyungdki@student.42seoul>        +#+  +:+       +#+        */
+/*   By: hyungdki <hyungdki@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/30 17:58:15 by hyungdki          #+#    #+#             */
-/*   Updated: 2023/06/26 22:26:50 by hyungdki         ###   ########.fr       */
+/*   Updated: 2023/06/27 13:20:13 by hyungdki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef FDF_H
-# define FDF_H
+#ifndef FDF_BONUS_H
+# define FDF_BONUS_H
 
 # include <unistd.h>
 # include <fcntl.h>
@@ -19,10 +19,10 @@
 # include <stdlib.h>
 # include <stdio.h>
 # include <math.h>
-# include "minilibx/mlx.h"
-# include "gnl/get_next_line.h"
-# include "libft/libft.h"
-# include "ft_printf/ft_printf.h"
+# include "../minilibx/mlx.h"
+# include "../gnl/get_next_line.h"
+# include "../libft/libft.h"
+# include "../ft_printf/ft_printf.h"
 
 # define WINDOW_SIZE_X 1280
 # define WINDOW_SIZE_Y 1024
@@ -73,8 +73,6 @@ typedef struct s_map
 	t_point		**map;
 	int			row;
 	int			col;
-	int			smallest_z;
-	int			largest_z;
 	int			midpoint_x_2d;
 	int			midpoint_y_2d;
 	double		largest_x_2d;

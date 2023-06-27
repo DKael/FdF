@@ -6,28 +6,39 @@
 #    By: hyungdki <hyungdki@student.42seoul.kr>     +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/05/03 20:30:42 by hyungdki          #+#    #+#              #
-#    Updated: 2023/06/26 20:54:33 by hyungdki         ###   ########.fr        #
+#    Updated: 2023/06/27 13:28:40 by hyungdki         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
-SRCS =	main.c	\
-		draw_diagonal1.c  \
-		draw_diagonal2.c  \
-		draw1.c  \
-		draw2.c  \
-		draw3.c  \
-		error.c  \
-		event.c  \
-		fdf1.c  \
-		fdf2.c  \
-		map_parsing.c  \
-		util.c  \
+SRCS =	./subject_mandatory/main.c	\
+		./subject_mandatory/draw_diagonal1.c  \
+		./subject_mandatory/draw_diagonal2.c  \
+		./subject_mandatory/draw1.c  \
+		./subject_mandatory/draw2.c  \
+		./subject_mandatory/draw3.c  \
+		./subject_mandatory/error.c  \
+		./subject_mandatory/event.c  \
+		./subject_mandatory/fdf1.c  \
+		./subject_mandatory/fdf2.c  \
+		./subject_mandatory/map_parsing.c  \
+		./subject_mandatory/util.c  \
 		
 OBJS = 	${SRCS:.c=.o}
 
-# SRCS_BONUS =	main_bonus.c	\
+SRCS_BONUS =	./subject_bonus/main_bonus.c	\
+				./subject_bonus/draw_diagonal1_bonus.c  \
+				./subject_bonus/draw_diagonal2_bonus.c  \
+				./subject_bonus/draw1_bonus.c  \
+				./subject_bonus/draw2_bonus.c  \
+				./subject_bonus/draw3_bonus.c  \
+				./subject_bonus/error_bonus.c  \
+				./subject_bonus/event_bonus.c  \
+				./subject_bonus/fdf1_bonus.c  \
+				./subject_bonus/fdf2_bonus.c  \
+				./subject_bonus/map_parsing_bonus.c  \
+				./subject_bonus/util_bonus.c  \
 
-# OBJS_BONUS = 	${SRCS_BONUS:.c=.o}
+OBJS_BONUS = 	${SRCS_BONUS:.c=.o}
 
 CC = cc
 
@@ -47,24 +58,13 @@ MLX_DYLIB = libmlx.dylib
 
 WITH_BONUS = 0
 
-# ifeq ($(WITH_BONUS),1)
-# 	TOTAL_OBJS = ${OBJS_BONUS}
-# 	LDFLAGS = -L./libft -L./gnl -lft -lgnl
-# else
-# 	TOTAL_OBJS = ${OBJS}
-# 	LDFLAGS = -L./libft -lft
-# endif
-
-TOTAL_OBJS = ${OBJS}
+ifeq ($(WITH_BONUS),1)
+	TOTAL_OBJS = ${OBJS_BONUS}
+else
+	TOTAL_OBJS = ${OBJS}
+endif
 
 LDFLAGS = -L./libft -lft -L./gnl -lgnl -L./ft_printf -lftprintf -L. -lmlx
-
-# ${NAME} : ${TOTAL_OBJS}
-# 		make -C ${LIBFT_DIR} all
-# ifeq ($(WITH_BONUS),1)
-# 	make -C ${LIBGNL_DIR} all
-# endif
-# 		${CC} ${CFLAGS} ${LDFLAGS} ${TOTAL_OBJS} -o $@
 
 ${NAME} : ${TOTAL_OBJS}
 	make -C ${LIBFT_DIR} all
