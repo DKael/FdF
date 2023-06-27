@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   util_bonus.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hyungdki <hyungdki@student.42seoul.kr>     +#+  +:+       +#+        */
+/*   By: hyungdki <hyungdki@student.42seoul>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/26 19:36:24 by hyungdki          #+#    #+#             */
-/*   Updated: 2023/06/27 20:21:24 by hyungdki         ###   ########.fr       */
+/*   Updated: 2023/06/27 21:47:59 by hyungdki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,8 +64,8 @@ void	fdf_init(t_fdf *fdf, t_map *map)
 	fdf->zoom_change = FALSE;
 	fdf->rotate_change = FALSE;
 	fdf->move_value = 10;
-	fdf->alpha = 35.264;
-	fdf->beta = 45.0;
+	fdf->alpha = ALPHA_START;
+	fdf->beta = BETA_START;
 }
 
 void	map_init(t_map *map)

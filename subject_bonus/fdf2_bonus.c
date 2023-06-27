@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   fdf2_bonus.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hyungdki <hyungdki@student.42seoul.kr>     +#+  +:+       +#+        */
+/*   By: hyungdki <hyungdki@student.42seoul>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/26 20:49:55 by hyungdki          #+#    #+#             */
-/*   Updated: 2023/06/27 21:00:35 by hyungdki         ###   ########.fr       */
+/*   Updated: 2023/06/27 21:56:05 by hyungdki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,8 +18,12 @@ void	convert_point(t_map *map)
 {
 	int	r;
 	int	c;
+	double ralpha;
+	double rbeta;
 
 	r = -1;
+	ralpha = ALPHA_START * RADIAN;
+	rbeta = BETA_START * RADIAN;
 	while (++r < map->row)
 	{
 		c = -1;
@@ -27,6 +31,11 @@ void	convert_point(t_map *map)
 		{
 			map->map[r][c].x = (map->row / 2) * -1 + c;
 			map->map[r][c].y = (map->col / 2) * -1 + r;
+			map->map[r][c].x2d = map->map[r][c].x * cos(rbeta)
+						- map->map[r][c].z * sin(rbeta);
+			map->map[r][c].y2d = (map->map[r][c].x * sin(ralpha) * sin(rbeta)
+						+ map->map[r][c].y * cos(ralpha) 
+						+ map->map[r][c].z * sin(ralpha) * cos(rbeta)) * 1.1;
 		}
 	}
 }
@@ -47,7 +56,7 @@ void	rotate_point(t_map *map, double alpha, double beta)
 		while (++c < map->col)
 		{
 			map->map[r][c].x2d = map->map[r][c].x * cos(rbeta) - map->map[r][c].z * sin(rbeta);
-			map->map[r][c].y2d = map->map[r][c].x * sin(ralpha) * sin(rbeta) + map->map[r][c].y * cos(ralpha) + map->map[r][c].z * sin(ralpha) * cos(rbeta);
+			map->map[r][c].y2d = (map->map[r][c].x * sin(ralpha) * sin(rbeta) + map->map[r][c].y * cos(ralpha) + map->map[r][c].z * sin(ralpha) * cos(rbeta)) * 1.1;
 		}
 	}
 }

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   fdf_bonus.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hyungdki <hyungdki@student.42seoul.kr>     +#+  +:+       +#+        */
+/*   By: hyungdki <hyungdki@student.42seoul>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/30 17:58:15 by hyungdki          #+#    #+#             */
-/*   Updated: 2023/06/27 20:57:14 by hyungdki         ###   ########.fr       */
+/*   Updated: 2023/06/27 21:56:15 by hyungdki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,8 +26,8 @@
 
 # define WINDOW_SIZE_X 1280
 # define WINDOW_SIZE_Y 1024
-# define ISO_X 0.707106
-# define ISO_Y 0.5
+# define ALPHA_START 35.264
+# define BETA_START 45.0
 # define RADIAN 0.017453
 # if !defined(TRUE) && !defined(FALSE)
 #  define TRUE 1
