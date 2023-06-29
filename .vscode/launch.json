@@ -1,11 +1,12 @@
 {
     "configurations": [
+        
         {
             "name": "C/C++: gcc build and debug active file",
             "type": "cppdbg",
             "request": "launch",
             "program": "${fileDirname}/${fileBasenameNoExtension}",
-            "args": ["test_maps/42.fdf"],
+            "args": ["../test_maps/3x3.fdf"],
             "stopAtEntry": false,
             "cwd": "${fileDirname}",
             "environment": [],

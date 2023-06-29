@@ -6,13 +6,18 @@
 /*   By: hyungdki <hyungdki@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/26 19:35:35 by hyungdki          #+#    #+#             */
-/*   Updated: 2023/06/27 13:15:02 by hyungdki         ###   ########.fr       */
+/*   Updated: 2023/06/28 09:55:25 by hyungdki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "fdf_bonus.h"
 
-t_map	map_parsing1(char **argv)
+static void	map_parsing2(t_map *map, char **argv);
+static void	map_parsing3(t_map *map, char **split_result, int *r_idx);
+static void	mp_make_row(t_map *map, int *r_idx, int s_idx, char **split_result);
+static void	mp_make_row_color(t_map *map, int *r_idx, int s_idx, char **s_result);
+
+t_map	map_parsing(char **argv)
 {
 	t_map	map;
 	char	*buffer;
@@ -41,7 +46,7 @@ t_map	map_parsing1(char **argv)
 	return (map);
 }
 
-void	map_parsing2(t_map *map, char **argv)
+static void	map_parsing2(t_map *map, char **argv)
 {
 	int		map_r_idx;
 	char	**split_result;
@@ -70,7 +75,7 @@ void	map_parsing2(t_map *map, char **argv)
 	}
 }
 
-void	map_parsing3(t_map *map, char **split_result, int *r_idx)
+static void	map_parsing3(t_map *map, char **split_result, int *r_idx)
 {
 	int	s_idx;
 
@@ -99,7 +104,7 @@ void	map_parsing3(t_map *map, char **split_result, int *r_idx)
 	}
 }
 
-void	mp_make_row(t_map *map, int *r_idx, int s_idx, char **split_result)
+static void	mp_make_row(t_map *map, int *r_idx, int s_idx, char **split_result)
 {
 	map->map[++(*r_idx)] = (t_point *)malloc(sizeof(t_point) * s_idx);
 	if (map->map[*r_idx] == T_NULL)
@@ -126,7 +131,7 @@ void	mp_make_row(t_map *map, int *r_idx, int s_idx, char **split_result)
 	free_2d_array((void **)split_result);
 }
 
-void	mp_make_row_color(t_map *map, int *r_idx, int s_idx, char **s_result)
+static void	mp_make_row_color(t_map *map, int *r_idx, int s_idx, char **s_result)
 {
 	char	**split_color;
 

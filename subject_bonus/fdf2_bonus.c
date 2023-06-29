@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   fdf2_bonus.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hyungdki <hyungdki@student.42seoul>        +#+  +:+       +#+        */
+/*   By: hyungdki <hyungdki@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/26 20:49:55 by hyungdki          #+#    #+#             */
-/*   Updated: 2023/06/27 21:56:05 by hyungdki         ###   ########.fr       */
+/*   Updated: 2023/06/29 16:00:45 by hyungdki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,12 +18,8 @@ void	convert_point(t_map *map)
 {
 	int	r;
 	int	c;
-	double ralpha;
-	double rbeta;
 
 	r = -1;
-	ralpha = ALPHA_START * RADIAN;
-	rbeta = BETA_START * RADIAN;
 	while (++r < map->row)
 	{
 		c = -1;
@@ -31,37 +27,78 @@ void	convert_point(t_map *map)
 		{
 			map->map[r][c].x = (map->row / 2) * -1 + c;
 			map->map[r][c].y = (map->col / 2) * -1 + r;
-			map->map[r][c].x2d = map->map[r][c].x * cos(rbeta)
-						- map->map[r][c].z * sin(rbeta);
-			map->map[r][c].y2d = (map->map[r][c].x * sin(ralpha) * sin(rbeta)
-						+ map->map[r][c].y * cos(ralpha) 
-						+ map->map[r][c].z * sin(ralpha) * cos(rbeta)) * 1.1;
+			map->map[r][c].x2d = (map->map[r][c].x - map->map[r][c].y) * ISO_X;
+			map->map[r][c].y2d = (map->map[r][c].x + map->map[r][c].y) * ISO_Y - map->map[r][c].z;;
 		}
-	}
+	} 
 }
 
-void	rotate_point(t_map *map, double alpha, double beta)
+double	get_length(t_point p)
+{
+	return (sqrt(p.x * p.x + p.y * p.y + p.z *p.z));
+}
+
+t_angle	calc_angle_func(int angle)
+{
+	t_angle	return_value;
+	double	radian_angle;
+
+	radian_angle = (double)angle * RADIAN;
+	return_value.sin = sin(radian_angle);
+	return_value.cos = cos(radian_angle);
+	if (angle == 90 || angle == 270)
+		return_value.tan = tan(radian_angle);
+	else
+		return_value.tan = 0;
+	return (return_value);
+}
+
+void	get_rotated_point(t_map *map, double dtheta, double dphi)
 {
 	int	r;
 	int	c;
-	double ralpha;
-	double rbeta;
+	t_point	temp1;
+	t_point temp2;
+	t_angle	theta;
+	t_angle	phi;
 
+	theta = calc_angle_func(dtheta);
+	phi = calc_angle_func(dphi);
 	r = -1;
-	ralpha = alpha * RADIAN;
-	rbeta = beta * RADIAN;
 	while (++r < map->row)
 	{
 		c = -1;
 		while (++c < map->col)
 		{
-			map->map[r][c].x2d = map->map[r][c].x * cos(rbeta) - map->map[r][c].z * sin(rbeta);
-			map->map[r][c].y2d = (map->map[r][c].x * sin(ralpha) * sin(rbeta) + map->map[r][c].y * cos(ralpha) + map->map[r][c].z * sin(ralpha) * cos(rbeta)) * 1.1;
+			temp1.x = map->map[r][c].x * phi.cos - map->map[r][c].y * phi.sin;
+			temp1.y = map->map[r][c].x * phi.sin + map->map[r][c].y * phi.cos;
+			temp1.z = map->map[r][c].z;
+			// if (fabs(dphi - 90.0) < EPSILON || fabs(dphi - 270.0) < EPSILON)
+			// {
+			// 	temp.x = temp.x * cos(dtheta) + temp.z * sin(dtheta);
+			// 	temp.z = temp.z * cos(dtheta) - temp.x * sin(dtheta);
+			// }
+			// else if (fabs(dphi - 0.0) < EPSILON || fabs(dphi - 180.0) < EPSILON)
+			// {
+			// 	temp.y = temp.y * cos(dtheta) - temp.z * sin(dtheta);
+			// 	temp.z = temp.y * sin(dtheta) + temp.z * cos(dtheta);
+			// }
+			// else
+			// {
+			// 	temp.x = temp.x + v * (1 - cos(dtheta)) * temp.y + v * sin(dtheta) * temp.z;
+			// 	temp.y = v * (1 - cos(dtheta)) * temp.x + (v * v * (1 - cos(dtheta)) + cos(dtheta)) * temp.y - sin(dtheta) * temp.z;
+			// 	temp.z = (1 - v) * sin(dtheta) * temp.y + cos(dtheta) * temp.z;
+			// }
+			temp2.x = (1.0 + theta.cos) / 2.0 * temp1.x + (theta.cos - 1.0) / 2.0 * temp1.y + (1.0 / sqrt(2.0)) * theta.sin * temp1.z;
+			temp2.y = (theta.cos - 1.0) / 2.0 * temp1.x + (1.0 + theta.cos) / 2.0 * temp1.y + (1.0 / sqrt(2.0)) * theta.sin * temp1.z;
+			temp2.z = theta.cos * temp1.z - (1.0 / sqrt(2.0)) * theta.sin * temp1.x + - (1.0 / sqrt(2.0)) * theta.sin * temp1.y;
+			map->map[r][c].x2d = (temp2.x - temp2.y) * ISO_X;
+			map->map[r][c].y2d = (temp2.x + temp2.y) * ISO_Y - temp2.z;
 		}
 	}
 }
 
-void	calc_win_size1(t_map *map)
+void	calc_win_size(t_map *map)
 {
 	int	r;
 	int	c;
@@ -118,6 +155,17 @@ void	enlarge_image(t_map *map)
 	}
 }
 
+t_bool	in_window(t_fdf *fdf, t_point p)
+{
+	if (0 <= p.rx2d + fdf->x2d_move
+		&& p.rx2d+ fdf->x2d_move < fdf->win_size_x
+		&& 0 <= p.ry2d + fdf->y2d_move
+		&& p.ry2d + fdf->y2d_move < fdf->win_size_y)
+		return (TRUE);
+	else
+		return (FALSE);
+}
+
 void	draw(t_fdf *fdf, t_map *map)
 {
 	int	r;
@@ -129,19 +177,26 @@ void	draw(t_fdf *fdf, t_map *map)
 		c = -1;
 		while (++c < map->col - 1)
 		{
-			mlx_pixel_put_at_mem(fdf, map->map[r][c].rx2d,
-				map->map[r][c].ry2d, map->map[r][c].color.color);
-			draw_line(fdf, map->map[r][c], map->map[r][c + 1]);
+			if (in_window(fdf, map->map[r][c]) == TRUE)
+				mlx_pixel_put_at_mem(fdf, map->map[r][c].rx2d,
+					map->map[r][c].ry2d, map->map[r][c].color.color);
+			if (in_window(fdf, map->map[r][c]) == TRUE || in_window(fdf, map->map[r][c + 1]) == TRUE)
+				draw_line(fdf, map->map[r][c], map->map[r][c + 1]);
 			if (r < map->row - 1)
 			{
-				draw_line(fdf, map->map[r][c], map->map[r + 1][c]);
+				if (in_window(fdf, map->map[r][c]) == TRUE || in_window(fdf, map->map[r + 1][c]) == TRUE)
+					draw_line(fdf, map->map[r][c], map->map[r + 1][c]);
 				if (!is_flat(map->map[r][c], map->map[r][c + 1],
-					map->map[r + 1][c], map->map[r + 1][c + 1]))
+					map->map[r + 1][c], map->map[r + 1][c + 1])
+					&& (in_window(fdf, map->map[r][c]) == TRUE || in_window(fdf, map->map[r + 1][c + 1]) == TRUE))
 					draw_line_diagonal(fdf, map, r, c);
 			}
 		}
 		if (r < map->row - 1)
-			draw_line(fdf, map->map[r][c], map->map[r + 1][c]);
+		{
+			if (in_window(fdf, map->map[r][c]) == TRUE || in_window(fdf, map->map[r + 1][c]) == TRUE)
+				draw_line(fdf, map->map[r][c], map->map[r + 1][c]);
+		}
 	}
 }
 
@@ -154,11 +209,10 @@ void	screen_clear(t_fdf *fdf)
 	y = -1;
 	while (++y < fdf->win_size_y)
 	{
-		dst = fdf->img_addr + y * fdf->size_line;
 		x = -1;
 		while (++x < fdf->win_size_x)
 		{
-			dst += fdf->bpp / 8;
+			dst = fdf->img_addr + y * fdf->size_line + x * (fdf->bpp / 8);
 			*(unsigned int *)dst = 0x00000000;
 		}
 	}

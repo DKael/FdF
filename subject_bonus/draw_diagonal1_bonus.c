@@ -6,11 +6,18 @@
 /*   By: hyungdki <hyungdki@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/26 19:48:23 by hyungdki          #+#    #+#             */
-/*   Updated: 2023/06/27 13:14:35 by hyungdki         ###   ########.fr       */
+/*   Updated: 2023/06/28 09:51:17 by hyungdki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "fdf_bonus.h"
+
+static t_bool	draw_line_diagonal_con1(int z00, int z01, int z10, int z11);
+static t_bool	draw_line_diagonal_con2(int z00, int z01, int z10, int z11);
+static t_bool	draw_line_diagonal_con3(int z00, int z01, int z10, int z11);
+static t_bool	draw_line_diagonal_con4(int z00, int z01, int z10, int z11);
+extern t_bool	draw_line_diagonal_con5(int z00, int z01, int z10, int z11);
+extern t_bool	draw_line_diagonal_con6(int z00, int z01, int z10, int z11);
 
 void	draw_line_diagonal(t_fdf *fdf, t_map *map, int r, int c)
 {
@@ -41,20 +48,9 @@ void	draw_line_diagonal(t_fdf *fdf, t_map *map, int r, int c)
 		draw_line(fdf, map->map[r][c], map->map[r + 1][c + 1]);
 }
 
-t_bool	is_flat(t_point p1, t_point p2, t_point p3, t_point p4)
-{
-	if ((p2.x - p1.x == p4.x - p3.x
-			&& p2.y - p1.y == p4.y - p3.y
-			&& p2.z - p1.z == p4.z - p3.z)
-		&& (p1.x - p3.x == p2.x - p4.x
-			&& p1.y - p3.y == p2.y - p4.y
-			&& p1.z - p3.z == p2.z - p4.z))
-		return (TRUE);
-	else
-		return (FALSE);
-}
 
-t_bool	draw_line_diagonal_con1(int z00, int z01, int z10, int z11)
+
+static t_bool	draw_line_diagonal_con1(int z00, int z01, int z10, int z11)
 {
 	if ((z00 == z01 && z00 == z10 && z00 != z11)
 		|| (z11 == z01 && z11 == z10 && z11 != z00))
@@ -63,7 +59,7 @@ t_bool	draw_line_diagonal_con1(int z00, int z01, int z10, int z11)
 		return (FALSE);
 }
 
-t_bool	draw_line_diagonal_con2(int z00, int z01, int z10, int z11)
+static t_bool	draw_line_diagonal_con2(int z00, int z01, int z10, int z11)
 {
 	if ((z01 == z00 && z01 == z11 && z01 != z10)
 		|| (z10 == z00 && z10 == z11 && z10 != z01))
@@ -72,10 +68,19 @@ t_bool	draw_line_diagonal_con2(int z00, int z01, int z10, int z11)
 		return (FALSE);
 }
 
-t_bool	draw_line_diagonal_con3(int z00, int z01, int z10, int z11)
+static t_bool	draw_line_diagonal_con3(int z00, int z01, int z10, int z11)
 {
 	if ((z10 < z11 && z10 < z00 && z01 > z11 && z01 > z00)
 		|| (z10 > z11 && z10 > z00 && z01 < z11 && z01 < z00))
+		return (TRUE);
+	else
+		return (FALSE);
+}
+
+t_bool	draw_line_diagonal_con4(int z00, int z01, int z10, int z11)
+{
+	if ((z00 < z01 && z00 < z10 && z11 > z01 && z11 > z10)
+		|| (z00 > z01 && z00 > z10 && z11 < z01 && z11 < z10))
 		return (TRUE);
 	else
 		return (FALSE);

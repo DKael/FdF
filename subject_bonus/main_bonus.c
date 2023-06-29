@@ -6,7 +6,7 @@
 /*   By: hyungdki <hyungdki@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/30 17:58:08 by hyungdki          #+#    #+#             */
-/*   Updated: 2023/06/27 13:14:59 by hyungdki         ###   ########.fr       */
+/*   Updated: 2023/06/28 09:46:39 by hyungdki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,6 @@ int	main(int argc, char **argv)
 		return (1);
 	}
 	err_init(argv);
-	fdf1(argv);
+	fdf(argv);
 	return (0);
 }

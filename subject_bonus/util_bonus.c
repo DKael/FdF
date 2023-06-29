@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   util_bonus.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hyungdki <hyungdki@student.42seoul>        +#+  +:+       +#+        */
+/*   By: hyungdki <hyungdki@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/26 19:36:24 by hyungdki          #+#    #+#             */
-/*   Updated: 2023/06/27 21:47:59 by hyungdki         ###   ########.fr       */
+/*   Updated: 2023/06/29 18:26:39 by hyungdki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,6 +49,19 @@ unsigned int	hex_str_to_uint(char *str_color)
 	return (result);
 }
 
+t_bool	is_flat(t_point p1, t_point p2, t_point p3, t_point p4)
+{
+	if ((p2.x - p1.x == p4.x - p3.x
+			&& p2.y - p1.y == p4.y - p3.y
+			&& p2.z - p1.z == p4.z - p3.z)
+		&& (p1.x - p3.x == p2.x - p4.x
+			&& p1.y - p3.y == p2.y - p4.y
+			&& p1.z - p3.z == p2.z - p4.z))
+		return (TRUE);
+	else
+		return (FALSE);
+}
+
 void	fdf_init(t_fdf *fdf, t_map *map)
 {
 	fdf->mlx_ptr = T_NULL;
@@ -63,9 +76,10 @@ void	fdf_init(t_fdf *fdf, t_map *map)
 	fdf->loc_change = FALSE;
 	fdf->zoom_change = FALSE;
 	fdf->rotate_change = FALSE;
-	fdf->move_value = 10;
-	fdf->alpha = ALPHA_START;
-	fdf->beta = BETA_START;
+	fdf->move_speed = 10;
+	fdf->rot_speed = 1;
+	fdf->dtheta = 0;
+	fdf->dphi = 0;
 }
 
 void	map_init(t_map *map)

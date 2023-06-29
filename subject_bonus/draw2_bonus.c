@@ -6,13 +6,16 @@
 /*   By: hyungdki <hyungdki@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/26 20:05:15 by hyungdki          #+#    #+#             */
-/*   Updated: 2023/06/27 13:54:54 by hyungdki         ###   ########.fr       */
+/*   Updated: 2023/06/28 09:44:47 by hyungdki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "fdf_bonus.h"
 
-void	draw_line_move_x1(t_fdf *fdf, t_point p1, t_point p2)
+static void	draw_line_move_x2(t_fdf *fdf, t_point sxp, t_point bxp);
+static void	draw_line_move_y2(t_fdf *fdf, t_point syp, t_point byp);
+
+void	draw_line_move_x(t_fdf *fdf, t_point p1, t_point p2)
 {
 	t_point	sxp;
 	t_point	bxp;
@@ -30,7 +33,7 @@ void	draw_line_move_x1(t_fdf *fdf, t_point p1, t_point p2)
 	draw_line_move_x2(fdf, sxp, bxp);
 }
 
-void	draw_line_move_x2(t_fdf *fdf, t_point sxp, t_point bxp)
+static void	draw_line_move_x2(t_fdf *fdf, t_point sxp, t_point bxp)
 {
 	int		x;
 	int		y;
@@ -49,7 +52,7 @@ void	draw_line_move_x2(t_fdf *fdf, t_point sxp, t_point bxp)
 	free(color_box);
 }
 
-void	draw_line_move_y1(t_fdf *fdf, t_point p1, t_point p2)
+void	draw_line_move_y(t_fdf *fdf, t_point p1, t_point p2)
 {
 	t_point	syp;
 	t_point	byp;
@@ -67,7 +70,7 @@ void	draw_line_move_y1(t_fdf *fdf, t_point p1, t_point p2)
 	draw_line_move_y2(fdf, syp, byp);
 }
 
-void	draw_line_move_y2(t_fdf *fdf, t_point syp, t_point byp)
+static void	draw_line_move_y2(t_fdf *fdf, t_point syp, t_point byp)
 {
 	int		x;
 	int		y;

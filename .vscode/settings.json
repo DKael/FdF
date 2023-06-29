@@ -7,6 +7,7 @@
 		"fdf.h": "c",
 		"stdio.h": "c",
 		"fdf_bonus.h": "c",
-		"mlx.h": "c"
+		"mlx.h": "c",
+		"__locale": "c"
 	}
 }

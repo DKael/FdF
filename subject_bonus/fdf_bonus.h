@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   fdf_bonus.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hyungdki <hyungdki@student.42seoul>        +#+  +:+       +#+        */
+/*   By: hyungdki <hyungdki@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/30 17:58:15 by hyungdki          #+#    #+#             */
-/*   Updated: 2023/06/27 21:56:15 by hyungdki         ###   ########.fr       */
+/*   Updated: 2023/06/29 18:26:20 by hyungdki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,9 +26,11 @@
 
 # define WINDOW_SIZE_X 1280
 # define WINDOW_SIZE_Y 1024
-# define ALPHA_START 35.264
-# define BETA_START 45.0
-# define RADIAN 0.017453
+# define ISO_X 0.866025403784439
+# define ISO_Y 0.7
+# define RADIAN 0.017453292519943
+# define PI 3.141592653589793
+# define EPSILON 0.00000001
 # if !defined(TRUE) && !defined(FALSE)
 #  define TRUE 1
 #  define FALSE 0
@@ -86,38 +88,35 @@ typedef struct s_fdf
 	int		size_line;
 	int		endian;
 	t_map	*map_ptr;
+	int		move_speed;
 	int		x2d_move;
 	int		y2d_move;
+	int		rot_speed;
+	int		dtheta;
+	int		dphi;
 	t_bool	loc_change;
 	t_bool	zoom_change;
 	t_bool	rotate_change;
-	int		move_value;
-	double	alpha;
-	double	beta;
 }	t_fdf;
+
+typedef struct s_angle
+{
+	double	sin;
+	double	cos;
+	double	tan;
+}	t_angle;
 
 // draw_diagonal1.c
 void			draw_line_diagonal(t_fdf *fdf, t_map *map, int r, int c);
-t_bool			is_flat(t_point p1, t_point p2, t_point p3, t_point p4);
-t_bool			draw_line_diagonal_con1(int z00, int z01, int z10, int z11);
-t_bool			draw_line_diagonal_con2(int z00, int z01, int z10, int z11);
-t_bool			draw_line_diagonal_con3(int z00, int z01, int z10, int z11);
-// draw_diagonal2.c
-t_bool			draw_line_diagonal_con4(int z00, int z01, int z10, int z11);
-t_bool			draw_line_diagonal_con5(int z00, int z01, int z10, int z11);
-t_bool			draw_line_diagonal_con6(int z00, int z01, int z10, int z11);
+
 //draw1.c
 void			draw_line(t_fdf *fdf, t_point p1, t_point p2);
 void			draw_vertical_line(t_fdf *fdf, t_point p1, t_point p2);
 void			draw_horizontal_line(t_fdf *fdf, t_point p1, t_point p2);
-void			draw_line_slope_abs1(t_fdf *fdf, t_point p1, t_point p2);
-void			draw_line_slope_abs2(t_fdf *fdf, t_point sxp,
-					t_point bxp, int y);
+void			draw_line_slope_abs(t_fdf *fdf, t_point p1, t_point p2);
 //draw2.c
-void			draw_line_move_x1(t_fdf *fdf, t_point p1, t_point p2);
-void			draw_line_move_x2(t_fdf *fdf, t_point sxp, t_point bxp);
-void			draw_line_move_y1(t_fdf *fdf, t_point p1, t_point p2);
-void			draw_line_move_y2(t_fdf *fdf, t_point syp, t_point byp);
+void			draw_line_move_x(t_fdf *fdf, t_point p1, t_point p2);
+void			draw_line_move_y(t_fdf *fdf, t_point p1, t_point p2);
 //draw3.c
 void			mlx_pixel_put_at_mem(t_fdf *fdf, int x, int y, int color);
 t_color			*calc_color(t_point sp, t_point bp, int np);
@@ -130,27 +129,22 @@ int				press_cross_on_window_frame(t_fdf *fdf);
 int				key_event(int keycode, t_fdf *fdf);
 int				mouse_event(int button, int x, int y, t_fdf *fdf);
 // fdf1.c
-void			fdf1(char **argv);
-void			fdf2(t_fdf *fdf, t_map *map);
+void			fdf(char **argv);
 // fdf2.c
 void			convert_point(t_map *map);
-void			rotate_point(t_map *map, double alpha, double beta);
-void			calc_win_size1(t_map *map);
+double	get_length(t_point p);
+void	get_rotated_point(t_map *map, double dtheta, double dphi);
+void			calc_win_size(t_map *map);
 void			enlarge_image(t_map *map);
 void			draw(t_fdf *fdf, t_map *map);
 void			add_move(t_fdf *fdf, t_map *map);
 void			screen_clear(t_fdf *fdf);
 // map_parsing.c
-t_map			map_parsing1(char **argv);
-void			map_parsing2(t_map *map, char **argv);
-void			map_parsing3(t_map *map, char **split_result, int *r_idx);
-void			mp_make_row(t_map *map, int *r_idx,
-					int s_idx, char **split_result);
-void			mp_make_row_color(t_map *map, int *r_idx,
-					int s_idx, char **s_result);
+t_map			map_parsing(char **argv);
 // util.c
 void			free_2d_array(void **array);
 unsigned int	hex_str_to_uint(char *str_color);
+t_bool			is_flat(t_point p1, t_point p2, t_point p3, t_point p4);
 void			fdf_init(t_fdf *fdf, t_map *map);
 void			map_init(t_map *map);
 

@@ -6,11 +6,13 @@
 /*   By: hyungdki <hyungdki@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/26 19:37:34 by hyungdki          #+#    #+#             */
-/*   Updated: 2023/06/27 13:54:54 by hyungdki         ###   ########.fr       */
+/*   Updated: 2023/06/28 09:45:53 by hyungdki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "fdf_bonus.h"
+
+static void	draw_line_slope_abs2(t_fdf *fdf, t_point sxp, t_point bxp, int y);
 
 void	draw_line(t_fdf *fdf, t_point p1, t_point p2)
 {
@@ -26,11 +28,11 @@ void	draw_line(t_fdf *fdf, t_point p1, t_point p2)
 	else if (dy == 0)
 		draw_horizontal_line(fdf, p1, p2);
 	else if (dx == dy)
-		draw_line_slope_abs1(fdf, p1, p2);
+		draw_line_slope_abs(fdf, p1, p2);
 	else if (dx > dy)
-		draw_line_move_x1(fdf, p1, p2);
+		draw_line_move_x(fdf, p1, p2);
 	else if (dx < dy)
-		draw_line_move_y1(fdf, p1, p2);
+		draw_line_move_y(fdf, p1, p2);
 }
 
 void	draw_vertical_line(t_fdf *fdf, t_point p1, t_point p2)
@@ -85,7 +87,7 @@ void	draw_horizontal_line(t_fdf *fdf, t_point p1, t_point p2)
 	free(color_box);
 }
 
-void	draw_line_slope_abs1(t_fdf *fdf, t_point p1, t_point p2)
+void	draw_line_slope_abs(t_fdf *fdf, t_point p1, t_point p2)
 {
 	t_point	sxp;
 	t_point	bxp;
@@ -106,7 +108,7 @@ void	draw_line_slope_abs1(t_fdf *fdf, t_point p1, t_point p2)
 	draw_line_slope_abs2(fdf, sxp, bxp, y);
 }
 
-void	draw_line_slope_abs2(t_fdf *fdf, t_point sxp, t_point bxp, int y)
+static void	draw_line_slope_abs2(t_fdf *fdf, t_point sxp, t_point bxp, int y)
 {
 	int		x;
 	int		move;
