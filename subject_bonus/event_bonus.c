@@ -6,7 +6,7 @@
 /*   By: hyungdki <hyungdki@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/26 19:47:42 by hyungdki          #+#    #+#             */
-/*   Updated: 2023/07/01 18:18:14 by hyungdki         ###   ########.fr       */
+/*   Updated: 2023/07/01 19:44:48 by hyungdki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,7 +81,7 @@ static void	move_speed(int keycode, t_fdf *fdf)
 
 static void image_rotate(int keycode, t_fdf *fdf)
 {
-	if (keycode == 13)
+	if (keycode == 1)
 	{
 		fdf->dtheta += fdf->rot_speed;
 		if (fdf->dtheta >= 360)
@@ -96,7 +96,7 @@ static void image_rotate(int keycode, t_fdf *fdf)
 		fdf->rotate_change = TRUE;
 		fdf->rotate_change = TRUE;
 	}
-	else if (keycode == 1)
+	else if (keycode == 13)
 	{
 		fdf->dtheta -= fdf->rot_speed;
 		if (fdf->dtheta < 0)
