@@ -6,7 +6,7 @@
 /*   By: hyungdki <hyungdki@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/30 17:58:15 by hyungdki          #+#    #+#             */
-/*   Updated: 2023/06/29 18:26:20 by hyungdki         ###   ########.fr       */
+/*   Updated: 2023/07/01 17:28:48 by hyungdki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -136,6 +136,7 @@ double	get_length(t_point p);
 void	get_rotated_point(t_map *map, double dtheta, double dphi);
 void			calc_win_size(t_map *map);
 void			enlarge_image(t_map *map);
+t_bool	in_window(t_fdf *fdf, t_point p);
 void			draw(t_fdf *fdf, t_map *map);
 void			add_move(t_fdf *fdf, t_map *map);
 void			screen_clear(t_fdf *fdf);

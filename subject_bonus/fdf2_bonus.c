@@ -6,7 +6,7 @@
 /*   By: hyungdki <hyungdki@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/26 20:49:55 by hyungdki          #+#    #+#             */
-/*   Updated: 2023/06/29 16:00:45 by hyungdki         ###   ########.fr       */
+/*   Updated: 2023/07/01 18:58:06 by hyungdki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,22 +73,6 @@ void	get_rotated_point(t_map *map, double dtheta, double dphi)
 			temp1.x = map->map[r][c].x * phi.cos - map->map[r][c].y * phi.sin;
 			temp1.y = map->map[r][c].x * phi.sin + map->map[r][c].y * phi.cos;
 			temp1.z = map->map[r][c].z;
-			// if (fabs(dphi - 90.0) < EPSILON || fabs(dphi - 270.0) < EPSILON)
-			// {
-			// 	temp.x = temp.x * cos(dtheta) + temp.z * sin(dtheta);
-			// 	temp.z = temp.z * cos(dtheta) - temp.x * sin(dtheta);
-			// }
-			// else if (fabs(dphi - 0.0) < EPSILON || fabs(dphi - 180.0) < EPSILON)
-			// {
-			// 	temp.y = temp.y * cos(dtheta) - temp.z * sin(dtheta);
-			// 	temp.z = temp.y * sin(dtheta) + temp.z * cos(dtheta);
-			// }
-			// else
-			// {
-			// 	temp.x = temp.x + v * (1 - cos(dtheta)) * temp.y + v * sin(dtheta) * temp.z;
-			// 	temp.y = v * (1 - cos(dtheta)) * temp.x + (v * v * (1 - cos(dtheta)) + cos(dtheta)) * temp.y - sin(dtheta) * temp.z;
-			// 	temp.z = (1 - v) * sin(dtheta) * temp.y + cos(dtheta) * temp.z;
-			// }
 			temp2.x = (1.0 + theta.cos) / 2.0 * temp1.x + (theta.cos - 1.0) / 2.0 * temp1.y + (1.0 / sqrt(2.0)) * theta.sin * temp1.z;
 			temp2.y = (theta.cos - 1.0) / 2.0 * temp1.x + (1.0 + theta.cos) / 2.0 * temp1.y + (1.0 / sqrt(2.0)) * theta.sin * temp1.z;
 			temp2.z = theta.cos * temp1.z - (1.0 / sqrt(2.0)) * theta.sin * temp1.x + - (1.0 / sqrt(2.0)) * theta.sin * temp1.y;
@@ -171,31 +155,242 @@ void	draw(t_fdf *fdf, t_map *map)
 	int	r;
 	int	c;
 
-	r = -1;
-	while (++r < map->row)
+	if (225 < fdf->dtheta || fdf->dtheta <= 45)
 	{
-		c = -1;
-		while (++c < map->col - 1)
+		if (315 < fdf->dphi || fdf->dphi <= 45)
 		{
-			if (in_window(fdf, map->map[r][c]) == TRUE)
-				mlx_pixel_put_at_mem(fdf, map->map[r][c].rx2d,
-					map->map[r][c].ry2d, map->map[r][c].color.color);
-			if (in_window(fdf, map->map[r][c]) == TRUE || in_window(fdf, map->map[r][c + 1]) == TRUE)
-				draw_line(fdf, map->map[r][c], map->map[r][c + 1]);
-			if (r < map->row - 1)
+			r = -1;
+			while (++r < map->row)
 			{
-				if (in_window(fdf, map->map[r][c]) == TRUE || in_window(fdf, map->map[r + 1][c]) == TRUE)
-					draw_line(fdf, map->map[r][c], map->map[r + 1][c]);
-				if (!is_flat(map->map[r][c], map->map[r][c + 1],
-					map->map[r + 1][c], map->map[r + 1][c + 1])
-					&& (in_window(fdf, map->map[r][c]) == TRUE || in_window(fdf, map->map[r + 1][c + 1]) == TRUE))
-					draw_line_diagonal(fdf, map, r, c);
+				c = -1;
+				while (++c < map->col - 1)
+				{
+					if (in_window(fdf, map->map[r][c]) == TRUE)
+						mlx_pixel_put_at_mem(fdf, map->map[r][c].rx2d,
+							map->map[r][c].ry2d, map->map[r][c].color.color);
+					if (in_window(fdf, map->map[r][c]) == TRUE || in_window(fdf, map->map[r][c + 1]) == TRUE)
+						draw_line(fdf, map->map[r][c], map->map[r][c + 1]);
+					if (r < map->row - 1)
+					{
+						if (in_window(fdf, map->map[r][c]) == TRUE || in_window(fdf, map->map[r + 1][c]) == TRUE)
+							draw_line(fdf, map->map[r][c], map->map[r + 1][c]);
+						if (!is_flat(map->map[r][c], map->map[r][c + 1],
+							map->map[r + 1][c], map->map[r + 1][c + 1]))
+							draw_line_diagonal(fdf, map, r, c);
+					}
+				}
+				if (r < map->row - 1)
+				{
+					if (in_window(fdf, map->map[r][c]) == TRUE || in_window(fdf, map->map[r + 1][c]) == TRUE)
+						draw_line(fdf, map->map[r][c], map->map[r + 1][c]);
+				}
 			}
 		}
-		if (r < map->row - 1)
+		else if (45 < fdf->dphi && fdf->dphi <= 135)
 		{
-			if (in_window(fdf, map->map[r][c]) == TRUE || in_window(fdf, map->map[r + 1][c]) == TRUE)
-				draw_line(fdf, map->map[r][c], map->map[r + 1][c]);
+			c = -1;
+			while (++c < map->col)
+			{
+				r = map->row;
+				while (--r > 0)
+				{
+					if (in_window(fdf, map->map[r][c]) == TRUE)
+						mlx_pixel_put_at_mem(fdf, map->map[r][c].rx2d,
+							map->map[r][c].ry2d, map->map[r][c].color.color);
+					if (in_window(fdf, map->map[r][c]) == TRUE || in_window(fdf, map->map[r - 1][c]) == TRUE)
+						draw_line(fdf, map->map[r][c], map->map[r - 1][c]);
+					if (c < map->col - 1)
+					{
+						if (in_window(fdf, map->map[r][c]) == TRUE || in_window(fdf, map->map[r][c + 1]) == TRUE)
+							draw_line(fdf, map->map[r][c], map->map[r][c + 1]);
+						if (!is_flat(map->map[r][c], map->map[r][c + 1],
+							map->map[r - 1][c], map->map[r - 1][c + 1]))
+							draw_line_diagonal(fdf, map, r - 1, c);
+					}
+				}
+				if (c < map->col - 1)
+				{
+					if (in_window(fdf, map->map[r][c]) == TRUE || in_window(fdf, map->map[r][c + 1]) == TRUE)
+						draw_line(fdf, map->map[r][c], map->map[r][c + 1]);
+				}
+			}
+		}
+		else if (135 < fdf->dphi && fdf->dphi <= 225)
+		{
+			r = map->row;
+			while (--r >= 0)
+			{
+				c = map->col;
+				while (--c > 0)
+				{
+					if (in_window(fdf, map->map[r][c]) == TRUE)
+						mlx_pixel_put_at_mem(fdf, map->map[r][c].rx2d,
+							map->map[r][c].ry2d, map->map[r][c].color.color);
+					if (in_window(fdf, map->map[r][c]) == TRUE || in_window(fdf, map->map[r][c - 1]) == TRUE)
+						draw_line(fdf, map->map[r][c], map->map[r][c - 1]);
+					if (r > 0)
+					{
+						if (in_window(fdf, map->map[r][c]) == TRUE || in_window(fdf, map->map[r - 1][c]) == TRUE)
+							draw_line(fdf, map->map[r][c], map->map[r - 1][c]);
+						if (!is_flat(map->map[r][c], map->map[r][c - 1],
+							map->map[r - 1][c], map->map[r - 1][c - 1]))
+							draw_line_diagonal(fdf, map, r - 1, c - 1);
+					}
+				}
+				if (r > 0)
+				{
+					if (in_window(fdf, map->map[r][c]) == TRUE || in_window(fdf, map->map[r - 1][c]) == TRUE)
+						draw_line(fdf, map->map[r][c], map->map[r - 1][c]);
+				}
+			}
+		}
+		else
+		{
+			c = map->col;
+			while (--c >= 0)
+			{
+				r = -1;
+				while (++r < map->row - 1)
+				{
+					if (in_window(fdf, map->map[r][c]) == TRUE)
+						mlx_pixel_put_at_mem(fdf, map->map[r][c].rx2d,
+							map->map[r][c].ry2d, map->map[r][c].color.color);
+					if (in_window(fdf, map->map[r][c]) == TRUE || in_window(fdf, map->map[r + 1][c]) == TRUE)
+						draw_line(fdf, map->map[r][c], map->map[r + 1][c]);
+					if (c > 0)
+					{
+						if (in_window(fdf, map->map[r][c]) == TRUE || in_window(fdf, map->map[r][c - 1]) == TRUE)
+							draw_line(fdf, map->map[r][c], map->map[r][c - 1]);
+						if (!is_flat(map->map[r][c], map->map[r + 1][c],
+							map->map[r][c - 1], map->map[r + 1][c - 1]))
+							draw_line_diagonal(fdf, map, r, c - 1);
+					}
+				}
+				if (c > 0)
+				{
+					if (in_window(fdf, map->map[r][c]) == TRUE || in_window(fdf, map->map[r][c - 1]) == TRUE)
+						draw_line(fdf, map->map[r][c], map->map[r][c - 1]);
+				}
+			}
+		}
+	}
+	else
+	{
+		if (315 < fdf->dphi || fdf->dphi <= 45)
+		{
+			r = map->row;
+			while (--r >= 0)
+			{
+				c = map->col;
+				while (--c > 0)
+				{
+					if (in_window(fdf, map->map[r][c]) == TRUE)
+						mlx_pixel_put_at_mem(fdf, map->map[r][c].rx2d,
+							map->map[r][c].ry2d, map->map[r][c].color.color);
+					if (in_window(fdf, map->map[r][c]) == TRUE || in_window(fdf, map->map[r][c - 1]) == TRUE)
+						draw_line(fdf, map->map[r][c], map->map[r][c - 1]);
+					if (r > 0)
+					{
+						if (in_window(fdf, map->map[r][c]) == TRUE || in_window(fdf, map->map[r - 1][c]) == TRUE)
+							draw_line(fdf, map->map[r][c], map->map[r - 1][c]);
+						if (!is_flat(map->map[r][c], map->map[r][c - 1],
+							map->map[r - 1][c], map->map[r - 1][c - 1]))
+							draw_line_diagonal(fdf, map, r - 1, c - 1);
+					}
+				}
+				if (r > 0)
+				{
+					if (in_window(fdf, map->map[r][c]) == TRUE || in_window(fdf, map->map[r - 1][c]) == TRUE)
+						draw_line(fdf, map->map[r][c], map->map[r - 1][c]);
+				}
+			}
+		}
+		else if (45 < fdf->dphi && fdf->dphi <= 135)
+		{
+			c = map->col;
+			while (--c >= 0)
+			{
+				r = -1;
+				while (++r < map->row - 1)
+				{
+					if (in_window(fdf, map->map[r][c]) == TRUE)
+						mlx_pixel_put_at_mem(fdf, map->map[r][c].rx2d,
+							map->map[r][c].ry2d, map->map[r][c].color.color);
+					if (in_window(fdf, map->map[r][c]) == TRUE || in_window(fdf, map->map[r + 1][c]) == TRUE)
+						draw_line(fdf, map->map[r][c], map->map[r + 1][c]);
+					if (c > 0)
+					{
+						if (in_window(fdf, map->map[r][c]) == TRUE || in_window(fdf, map->map[r][c - 1]) == TRUE)
+							draw_line(fdf, map->map[r][c], map->map[r][c - 1]);
+						if (!is_flat(map->map[r][c], map->map[r + 1][c],
+							map->map[r][c - 1], map->map[r + 1][c - 1]))
+							draw_line_diagonal(fdf, map, r, c - 1);
+					}
+				}
+				if (c > 0)
+				{
+					if (in_window(fdf, map->map[r][c]) == TRUE || in_window(fdf, map->map[r][c - 1]) == TRUE)
+						draw_line(fdf, map->map[r][c], map->map[r][c - 1]);
+				}
+			}
+		}
+		else if (135 < fdf->dphi && fdf->dphi <= 225)
+		{
+			r = -1;
+			while (++r < map->row)
+			{
+				c = -1;
+				while (++c < map->col - 1)
+				{
+					if (in_window(fdf, map->map[r][c]) == TRUE)
+						mlx_pixel_put_at_mem(fdf, map->map[r][c].rx2d,
+							map->map[r][c].ry2d, map->map[r][c].color.color);
+					if (in_window(fdf, map->map[r][c]) == TRUE || in_window(fdf, map->map[r][c + 1]) == TRUE)
+						draw_line(fdf, map->map[r][c], map->map[r][c + 1]);
+					if (r < map->row - 1)
+					{
+						if (in_window(fdf, map->map[r][c]) == TRUE || in_window(fdf, map->map[r + 1][c]) == TRUE)
+							draw_line(fdf, map->map[r][c], map->map[r + 1][c]);
+						if (!is_flat(map->map[r][c], map->map[r][c + 1],
+							map->map[r + 1][c], map->map[r + 1][c + 1]))
+							draw_line_diagonal(fdf, map, r, c);
+					}
+				}
+				if (r < map->row - 1)
+				{
+					if (in_window(fdf, map->map[r][c]) == TRUE || in_window(fdf, map->map[r + 1][c]) == TRUE)
+						draw_line(fdf, map->map[r][c], map->map[r + 1][c]);
+				}
+			}
+		}
+		else
+		{
+			c = -1;
+			while (++c < map->col)
+			{
+				r = map->row;
+				while (--r > 0)
+				{
+					if (in_window(fdf, map->map[r][c]) == TRUE)
+						mlx_pixel_put_at_mem(fdf, map->map[r][c].rx2d,
+							map->map[r][c].ry2d, map->map[r][c].color.color);
+					if (in_window(fdf, map->map[r][c]) == TRUE || in_window(fdf, map->map[r - 1][c]) == TRUE)
+						draw_line(fdf, map->map[r][c], map->map[r - 1][c]);
+					if (c < map->col - 1)
+					{
+						if (in_window(fdf, map->map[r][c]) == TRUE || in_window(fdf, map->map[r][c + 1]) == TRUE)
+							draw_line(fdf, map->map[r][c], map->map[r][c + 1]);
+						if (!is_flat(map->map[r][c], map->map[r][c + 1],
+							map->map[r - 1][c], map->map[r - 1][c + 1]))
+							draw_line_diagonal(fdf, map, r - 1, c);
+					}
+				}
+				if (c < map->col - 1)
+				{
+					if (in_window(fdf, map->map[r][c]) == TRUE || in_window(fdf, map->map[r][c + 1]) == TRUE)
+						draw_line(fdf, map->map[r][c], map->map[r][c + 1]);
+				}
+			}
 		}
 	}
 }

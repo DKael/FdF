@@ -6,7 +6,7 @@
             "type": "cppdbg",
             "request": "launch",
             "program": "${fileDirname}/${fileBasenameNoExtension}",
-            "args": ["../test_maps/3x3.fdf"],
+            "args": ["../test_maps/elem-fract.fdf"],
             "stopAtEntry": false,
             "cwd": "${fileDirname}",
             "environment": [],

@@ -6,7 +6,7 @@
 /*   By: hyungdki <hyungdki@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/26 19:47:42 by hyungdki          #+#    #+#             */
-/*   Updated: 2023/06/29 19:17:15 by hyungdki         ###   ########.fr       */
+/*   Updated: 2023/07/01 18:18:14 by hyungdki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,45 +73,15 @@ static void	move_speed(int keycode, t_fdf *fdf)
 		fdf->move_speed += 1;
 	else if (keycode == 27 && fdf->move_speed > 0)
 		fdf->move_speed -= 1;
+	else if (keycode == 30 && fdf->rot_speed < 180)
+		fdf->rot_speed += 1;
+	else if (keycode == 33 && fdf->rot_speed > 1)
+		fdf->rot_speed -= 1;
 }
 
 static void image_rotate(int keycode, t_fdf *fdf)
 {
 	if (keycode == 13)
-	{
-		fdf->dtheta += fdf->rot_speed;
-		if (fdf->dtheta < 0)
-			fdf->dtheta += 360;
-		fdf->rotate_change = TRUE;
-	}
-	else if (keycode == 0)
-	{
-		if ((225 < fdf->dtheta && fdf->dtheta < 315) && (45 < fdf->dphi && fdf->dphi <= 225))
-		{
-			fdf->dphi -= fdf->rot_speed;
-			if (!(45 < fdf->dphi && fdf->dphi <= 225))
-			{
-				fdf->dphi = (226 + (45 - fdf->dphi)) % 360;
-				fdf->dtheta = (630 - fdf->dtheta) % 360;
-			}
-		}
-		else if ((315 < fdf->dtheta || fdf->dtheta < 45) && (45 >= fdf->dphi || fdf->dphi > 225))
-		{
-			fdf->dphi += fdf->rot_speed;
-			if (fdf->dphi >= 360)
-				fdf->dphi -= 360;
-			if (!(45 >= fdf->dphi || fdf->dphi > 225))
-			{
-				fdf->dphi = (226 + (45 - fdf->dphi)) % 360;
-				if (fdf->dtheta < 45)
-					fdf->dtheta = 270 - fdf->dtheta;
-				else
-					fdf->dtheta = 630 - fdf->dtheta;
-			}
-		}
-		fdf->rotate_change = TRUE;
-	}
-	else if (keycode == 1)
 	{
 		fdf->dtheta += fdf->rot_speed;
 		if (fdf->dtheta >= 360)
@@ -121,6 +91,21 @@ static void image_rotate(int keycode, t_fdf *fdf)
 	else if (keycode == 2)
 	{
 		fdf->dphi += fdf->rot_speed;
+		if (fdf->dphi >= 360)
+			fdf->dphi -= 360;
+		fdf->rotate_change = TRUE;
+		fdf->rotate_change = TRUE;
+	}
+	else if (keycode == 1)
+	{
+		fdf->dtheta -= fdf->rot_speed;
+		if (fdf->dtheta < 0)
+			fdf->dtheta += 360;
+		fdf->rotate_change = TRUE;
+	}
+	else if (keycode == 0)
+	{
+		fdf->dphi -= fdf->rot_speed;
 		if (fdf->dphi < 0)
 			fdf->dphi += 360;
 		fdf->rotate_change = TRUE;
