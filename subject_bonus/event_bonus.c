@@ -6,7 +6,7 @@
 /*   By: hyungdki <hyungdki@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/26 19:47:42 by hyungdki          #+#    #+#             */
-/*   Updated: 2023/07/02 19:41:51 by hyungdki         ###   ########.fr       */
+/*   Updated: 2023/07/02 20:39:07 by hyungdki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -167,14 +167,16 @@ int	mouse_move(int x, int y, t_fdf *fdf)
 		{
 			dx = x - fdf->old_x;
 			dy = y - fdf->old_y;
-			if (dx > 0)
-				image_move(123,fdf);
-			else if (dx < 0)
-				image_move(124,fdf);
-			if (dy > 0)
-				image_move(126,fdf);
-			else if (dy < 0)
-				image_move(125,fdf);
+			if (dx != 0)
+			{
+				fdf->x2d_move += dx;
+				fdf->loc_change = TRUE;
+			}
+			if (dy != 0)
+			{
+				fdf->y2d_move += dy;
+				fdf->loc_change = TRUE;
+			}
 			fdf->old_x = x;
 			fdf->old_y = y;
 		}
@@ -182,14 +184,24 @@ int	mouse_move(int x, int y, t_fdf *fdf)
 		{
 			dx = x - fdf->old_x;
 			dy = y - fdf->old_y;
-			if (dx > 0)
-				image_rotate(0,fdf);
-			else if (dx < 0)
-				image_rotate(2,fdf);
 			if (dy > 0)
-				image_rotate(1,fdf);
+				image_rotate(S_KEY,fdf);
 			else if (dy < 0)
-				image_rotate(13,fdf);
+				image_rotate(W_KEY,fdf);
+			if (225 < fdf->dtheta || fdf->dtheta <= 45)
+			{	
+				if (dx > 0)
+					image_rotate(A_KEY,fdf);
+			else if (dx < 0)
+					image_rotate(D_KEY,fdf);
+			}
+			else
+			{
+				if (dx > 0)
+					image_rotate(D_KEY,fdf);
+				else if (dx < 0)
+					image_rotate(A_KEY,fdf);	
+			}
 			fdf->old_x = x;
 			fdf->old_y = y;
 		}

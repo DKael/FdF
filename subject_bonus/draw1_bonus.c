@@ -6,7 +6,7 @@
 /*   By: hyungdki <hyungdki@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/26 19:37:34 by hyungdki          #+#    #+#             */
-/*   Updated: 2023/07/02 20:00:47 by hyungdki         ###   ########.fr       */
+/*   Updated: 2023/07/02 20:29:58 by hyungdki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -170,7 +170,7 @@ static void	draw_line_slope_abs2(t_fdf *fdf, t_point sxp, t_point bxp)
 	while (++idx < np)
 	{
 		point_box[idx].rx2d = sxp.rx2d + 1 + idx;
-		point_box[idx].ry2d = sxp.ry2d + move + (idx + 1);
+		point_box[idx].ry2d = sxp.ry2d + move * (idx + 1);
 	}
 	mlx_pixels_put_at_mem(fdf, point_box, color_box, np);
 	free(color_box);
