@@ -6,7 +6,7 @@
 /*   By: hyungdki <hyungdki@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/26 20:49:55 by hyungdki          #+#    #+#             */
-/*   Updated: 2023/07/01 19:48:30 by hyungdki         ###   ########.fr       */
+/*   Updated: 2023/07/02 20:01:28 by hyungdki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,11 +31,6 @@ void	convert_point(t_map *map)
 			map->map[r][c].y2d = (map->map[r][c].x + map->map[r][c].y) * ISO_Y - map->map[r][c].z;;
 		}
 	} 
-}
-
-double	get_length(t_point p)
-{
-	return (sqrt(p.x * p.x + p.y * p.y + p.z *p.z));
 }
 
 t_angle	calc_angle_func(int angle)
@@ -184,6 +179,7 @@ void	draw(t_fdf *fdf, t_map *map)
 					if (in_window(fdf, map->map[r][c]) == TRUE || in_window(fdf, map->map[r + 1][c]) == TRUE)
 						draw_line(fdf, map->map[r][c], map->map[r + 1][c]);
 				}
+				
 			}
 		}
 		else if (45 < fdf->dphi && fdf->dphi <= 135)
@@ -395,7 +391,7 @@ void	draw(t_fdf *fdf, t_map *map)
 	}
 }
 
-void	screen_clear(t_fdf *fdf)
+void	screen_clear(t_fdf *fdf, int image_num)
 {
 	char	*dst;
 	int	x;
@@ -407,7 +403,7 @@ void	screen_clear(t_fdf *fdf)
 		x = -1;
 		while (++x < fdf->win_size_x)
 		{
-			dst = fdf->img_addr + y * fdf->size_line + x * (fdf->bpp / 8);
+			dst = fdf->img_addr[image_num] + y * fdf->size_line[image_num] + x * (fdf->bpp[image_num] / 8);
 			*(unsigned int *)dst = 0x00000000;
 		}
 	}

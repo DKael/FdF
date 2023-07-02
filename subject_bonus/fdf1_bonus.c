@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   fdf1_bonus.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hyungdki <hyungdki@student.42seoul>        +#+  +:+       +#+        */
+/*   By: hyungdki <hyungdki@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/26 20:27:35 by hyungdki          #+#    #+#             */
-/*   Updated: 2023/07/02 01:38:31 by hyungdki         ###   ########.fr       */
+/*   Updated: 2023/07/02 19:49:17 by hyungdki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,41 +43,54 @@ static void	fdf2(t_fdf *fdf, t_map *map)
 		free_2d_array((void *)map->map);
 		exit(1);
 	}
-	fdf->img_ptr = mlx_new_image(fdf->mlx_ptr,
+	fdf->img_ptr[0] = mlx_new_image(fdf->mlx_ptr,
 			fdf->win_size_x, fdf->win_size_y);
-	if (fdf->img_ptr == T_NULL)
+	if (fdf->img_ptr[0] == T_NULL)
 	{
 		free_2d_array((void *)map->map); 
 		exit(1);
 	}
-	fdf->img_addr = mlx_get_data_addr(fdf->img_ptr,
-			&(fdf->bpp), &(fdf->size_line), &(fdf->endian));
+	fdf->img_addr[0] = mlx_get_data_addr(fdf->img_ptr[0],
+			&(fdf->bpp[0]), &(fdf->size_line[0]), &(fdf->endian[0]));
+	fdf->img_ptr[1] = mlx_new_image(fdf->mlx_ptr,
+			fdf->win_size_x, fdf->win_size_y);
+	if (fdf->img_ptr[1] == T_NULL)
+	{
+		free_2d_array((void *)map->map); 
+		exit(1);
+	}
+	fdf->img_addr[1] = mlx_get_data_addr(fdf->img_ptr[1],
+			&(fdf->bpp[1]), &(fdf->size_line[1]), &(fdf->endian[1]));
 	draw(fdf, fdf->map_ptr);
-	mlx_put_image_to_window(fdf->mlx_ptr, fdf->win_ptr, fdf->img_ptr, 0, 0);
-	mlx_hook(fdf->win_ptr, 2, 0, key_event, fdf);
-	mlx_hook(fdf->win_ptr, 4, 0, mouse_click, fdf);
-	mlx_hook(fdf->win_ptr, 5, 0, mouse_release, fdf);
-	mlx_hook(fdf->win_ptr, 6, 0, mouse_move, fdf);
-	mlx_hook(fdf->win_ptr, 17, 0, press_cross_on_window_frame, fdf);
+	mlx_put_image_to_window(fdf->mlx_ptr, fdf->win_ptr, fdf->img_ptr[fdf->cur_image], 0, 0);
+	mlx_hook(fdf->win_ptr, KEYPRESS, 0, key_event, fdf);
+	mlx_hook(fdf->win_ptr, BUTTONPRESS, 0, mouse_click, fdf);
+	mlx_hook(fdf->win_ptr, BUTTONRELEASE, 0, mouse_release, fdf);
+	mlx_hook(fdf->win_ptr, MOTIONNOTIFY, 0, mouse_move, fdf);
+	mlx_hook(fdf->win_ptr, DESTROYNOTIFY, 0, press_cross_on_window_frame, fdf);
 	mlx_loop_hook(fdf->mlx_ptr, loop_func, fdf);
 	mlx_loop(fdf->mlx_ptr);
 }
 
 int	loop_func(t_fdf *fdf)
 {
+	
 	if (fdf->loc_change == TRUE || fdf->zoom_change == TRUE || fdf->rotate_change == TRUE)
 	{
+		if (fdf->cur_image == 0)
+			fdf->cur_image = 1;
+		else
+			fdf->cur_image = 0;
 		if (fdf->rotate_change == TRUE)
 		{
-			printf("theta : %d, phi : %d\n", fdf->dtheta, fdf->dphi);
 			get_rotated_point(fdf->map_ptr, fdf->dtheta, fdf->dphi);
 			enlarge_image(fdf->map_ptr);
 		}
 		else if (fdf->zoom_change == TRUE)
 			enlarge_image(fdf->map_ptr);
-		screen_clear(fdf);
 		draw(fdf, fdf->map_ptr); 
-		mlx_put_image_to_window(fdf->mlx_ptr, fdf->win_ptr, fdf->img_ptr, 0, 0);
+		mlx_put_image_to_window(fdf->mlx_ptr, fdf->win_ptr, fdf->img_ptr[fdf->cur_image], 0, 0);
+		screen_clear(fdf, 1 - 1 * (fdf->cur_image == 1));
 		fdf->loc_change = FALSE;
 		fdf->zoom_change = FALSE;
 		fdf->rotate_change = FALSE;

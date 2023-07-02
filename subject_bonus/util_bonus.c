@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   util_bonus.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hyungdki <hyungdki@student.42seoul>        +#+  +:+       +#+        */
+/*   By: hyungdki <hyungdki@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/26 19:36:24 by hyungdki          #+#    #+#             */
-/*   Updated: 2023/07/02 10:32:34 by hyungdki         ###   ########.fr       */
+/*   Updated: 2023/07/02 19:40:53 by hyungdki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,8 +66,10 @@ void	fdf_init(t_fdf *fdf, t_map *map)
 {
 	fdf->mlx_ptr = T_NULL;
 	fdf->win_ptr = T_NULL;
-	fdf->img_ptr = T_NULL;
-	fdf->img_addr = T_NULL;
+	fdf->img_ptr[0] = T_NULL;
+	fdf->img_addr[0] = T_NULL;
+	fdf->img_ptr[1] = T_NULL;
+	fdf->img_addr[1] = T_NULL;
 	fdf->win_size_x = WINDOW_SIZE_X;
 	fdf->win_size_y = WINDOW_SIZE_Y;
 	fdf->map_ptr = map;
@@ -82,6 +84,9 @@ void	fdf_init(t_fdf *fdf, t_map *map)
 	fdf->dphi = 0;
 	fdf->l_mouse_clk = FALSE;
 	fdf->r_mouse_clk = FALSE;
+	fdf->old_x = -1;
+	fdf->old_y = -1;
+	fdf->cur_image = 0;
 }
 
 void	map_init(t_map *map)

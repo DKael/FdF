@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   fdf_bonus.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hyungdki <hyungdki@student.42seoul>        +#+  +:+       +#+        */
+/*   By: hyungdki <hyungdki@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/30 17:58:15 by hyungdki          #+#    #+#             */
-/*   Updated: 2023/07/02 10:26:58 by hyungdki         ###   ########.fr       */
+/*   Updated: 2023/07/02 20:05:00 by hyungdki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,6 @@
 # define ISO_Y 0.7
 # define RADIAN 0.017453292519943
 # define PI 3.141592653589793
-# define EPSILON 0.00000001
 # if !defined(TRUE) && !defined(FALSE)
 #  define TRUE 1
 #  define FALSE 0
@@ -81,13 +80,13 @@ typedef struct s_fdf
 {
 	void	*mlx_ptr;
 	void	*win_ptr;
-	void	*img_ptr;
-	char	*img_addr;
+	void	*img_ptr[2];
+	char	*img_addr[2];
 	int		win_size_x;
 	int		win_size_y;
-	int		bpp;
-	int		size_line;
-	int		endian;
+	int		bpp[2];
+	int		size_line[2];
+	int		endian[2];
 	t_map	*map_ptr;
 	int		move_speed;
 	int		x2d_move;
@@ -100,6 +99,9 @@ typedef struct s_fdf
 	t_bool	rotate_change;
 	t_bool	l_mouse_clk;
 	t_bool	r_mouse_clk;
+	int		old_x;
+	int		old_y;
+	int		cur_image;
 }	t_fdf;
 
 typedef struct s_angle
@@ -122,6 +124,7 @@ void			draw_line_move_x(t_fdf *fdf, t_point p1, t_point p2);
 void			draw_line_move_y(t_fdf *fdf, t_point p1, t_point p2);
 //draw3.c
 void			mlx_pixel_put_at_mem(t_fdf *fdf, int x, int y, int color);
+void	mlx_pixels_put_at_mem(t_fdf *fdf, t_point *p_box, t_color *c_box, int num);
 t_color			*calc_color(t_point sp, t_point bp, int np);
 // error.c
 void			err_init(char **argv);
@@ -144,7 +147,7 @@ void			enlarge_image(t_map *map);
 t_bool	in_window(t_fdf *fdf, t_point p);
 void			draw(t_fdf *fdf, t_map *map);
 void			add_move(t_fdf *fdf, t_map *map);
-void			screen_clear(t_fdf *fdf);
+void			screen_clear(t_fdf *fdf, int image_num);
 // map_parsing.c
 t_map			map_parsing(char **argv);
 // util.c
