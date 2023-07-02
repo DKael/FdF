@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   fdf_bonus.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hyungdki <hyungdki@student.42seoul.kr>     +#+  +:+       +#+        */
+/*   By: hyungdki <hyungdki@student.42seoul>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/30 17:58:15 by hyungdki          #+#    #+#             */
-/*   Updated: 2023/07/01 17:28:48 by hyungdki         ###   ########.fr       */
+/*   Updated: 2023/07/02 10:26:58 by hyungdki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,7 @@
 # include <stdio.h>
 # include <math.h>
 # include "../minilibx/mlx.h"
+# include "../minilibx/mlx_keycode.h"
 # include "../gnl/get_next_line.h"
 # include "../libft/libft.h"
 # include "../ft_printf/ft_printf.h"
@@ -97,6 +98,8 @@ typedef struct s_fdf
 	t_bool	loc_change;
 	t_bool	zoom_change;
 	t_bool	rotate_change;
+	t_bool	l_mouse_clk;
+	t_bool	r_mouse_clk;
 }	t_fdf;
 
 typedef struct s_angle
@@ -127,7 +130,9 @@ void			map_parsing_on_error(t_map *map, char **split_result);
 // event.c
 int				press_cross_on_window_frame(t_fdf *fdf);
 int				key_event(int keycode, t_fdf *fdf);
-int				mouse_event(int button, int x, int y, t_fdf *fdf);
+int				mouse_click(int button, int x, int y, t_fdf *fdf);
+int	mouse_release(int button, int x, int y, t_fdf *fdf);
+int	mouse_move(int x, int y, t_fdf *fdf);
 // fdf1.c
 void			fdf(char **argv);
 // fdf2.c

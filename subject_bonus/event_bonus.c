@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   event_bonus.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hyungdki <hyungdki@student.42seoul.kr>     +#+  +:+       +#+        */
+/*   By: hyungdki <hyungdki@student.42seoul>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/26 19:47:42 by hyungdki          #+#    #+#             */
-/*   Updated: 2023/07/01 19:44:48 by hyungdki         ###   ########.fr       */
+/*   Updated: 2023/07/02 11:16:43 by hyungdki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,19 +45,19 @@ int	key_event(int keycode, t_fdf *fdf)
 
 static void	image_move(int keycode, t_fdf *fdf)
 {
-	if(keycode == 124)
+	if(keycode == 123)
+	{
+		fdf->x2d_move += fdf->move_speed;
+		fdf->loc_change = TRUE;
+	}
+	else if(keycode == 124)
 	{
 		fdf->x2d_move -= fdf->move_speed;
 		fdf->loc_change = TRUE;
 	}
-	else if(keycode == 126)
+	if(keycode == 126)
 	{
 		fdf->y2d_move += fdf->move_speed;
-		fdf->loc_change = TRUE;
-	}
-	else if(keycode == 123)
-	{
-		fdf->x2d_move += fdf->move_speed;
 		fdf->loc_change = TRUE;
 	}
 	else if(keycode == 125)
@@ -88,19 +88,19 @@ static void image_rotate(int keycode, t_fdf *fdf)
 			fdf->dtheta -= 360;
 		fdf->rotate_change = TRUE;
 	}
-	else if (keycode == 2)
-	{
-		fdf->dphi += fdf->rot_speed;
-		if (fdf->dphi >= 360)
-			fdf->dphi -= 360;
-		fdf->rotate_change = TRUE;
-		fdf->rotate_change = TRUE;
-	}
 	else if (keycode == 13)
 	{
 		fdf->dtheta -= fdf->rot_speed;
 		if (fdf->dtheta < 0)
 			fdf->dtheta += 360;
+		fdf->rotate_change = TRUE;
+	}
+	if (keycode == 2)
+	{
+		fdf->dphi += fdf->rot_speed;
+		if (fdf->dphi >= 360)
+			fdf->dphi -= 360;
+		fdf->rotate_change = TRUE;
 		fdf->rotate_change = TRUE;
 	}
 	else if (keycode == 0)
@@ -112,10 +112,14 @@ static void image_rotate(int keycode, t_fdf *fdf)
 	}
 }
 
-int mouse_event(int button, int x, int y, t_fdf *fdf)
+int mouse_click(int button, int x, int y, t_fdf *fdf)
 {
 	if ((0 <= x && x < fdf->win_size_x) && (0 <= y && y < fdf->win_size_y))
 	{
+		if (button == 1)
+			fdf->l_mouse_clk = TRUE;
+		if (button == 2)
+			fdf->l_mouse_clk = TRUE;
 		if (button == 4 && fdf->map_ptr->basic_len < 200.0)
 		{
 			fdf->map_ptr->basic_len += 0.5;
@@ -129,6 +133,30 @@ int mouse_event(int button, int x, int y, t_fdf *fdf)
 			if (fdf->map_ptr->basic_len <= 0.0)
 				fdf->map_ptr->basic_len = 0.1;
 			fdf->zoom_change = TRUE;
+		}
+	}
+	return (0);
+}
+
+int	mouse_release(int button, int x, int y, t_fdf *fdf)
+{
+	if ((0 <= x && x < fdf->win_size_x) && (0 <= y && y < fdf->win_size_y))
+	{
+		if (button == 1)
+			fdf->l_mouse_clk = FALSE;
+			if (button == 1)
+			fdf->l_mouse_clk = FALSE;
+	}
+	return (0);
+}
+
+int	mouse_move(int x, int y, t_fdf *fdf)
+{
+	if ((0 <= x && x < fdf->win_size_x) && (0 <= y && y < fdf->win_size_y))
+	{
+		if (fdf->l_mouse_clk)
+		{
+			printf("x : %d, y : %d\n", x, y);
 		}
 	}
 	return (0);

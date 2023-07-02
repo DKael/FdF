@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   fdf1_bonus.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hyungdki <hyungdki@student.42seoul.kr>     +#+  +:+       +#+        */
+/*   By: hyungdki <hyungdki@student.42seoul>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/26 20:27:35 by hyungdki          #+#    #+#             */
-/*   Updated: 2023/07/01 19:29:13 by hyungdki         ###   ########.fr       */
+/*   Updated: 2023/07/02 01:38:31 by hyungdki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,8 +55,10 @@ static void	fdf2(t_fdf *fdf, t_map *map)
 	draw(fdf, fdf->map_ptr);
 	mlx_put_image_to_window(fdf->mlx_ptr, fdf->win_ptr, fdf->img_ptr, 0, 0);
 	mlx_hook(fdf->win_ptr, 2, 0, key_event, fdf);
+	mlx_hook(fdf->win_ptr, 4, 0, mouse_click, fdf);
+	mlx_hook(fdf->win_ptr, 5, 0, mouse_release, fdf);
+	mlx_hook(fdf->win_ptr, 6, 0, mouse_move, fdf);
 	mlx_hook(fdf->win_ptr, 17, 0, press_cross_on_window_frame, fdf);
-	mlx_hook(fdf->win_ptr, 4, 0, mouse_event, fdf);
 	mlx_loop_hook(fdf->mlx_ptr, loop_func, fdf);
 	mlx_loop(fdf->mlx_ptr);
 }

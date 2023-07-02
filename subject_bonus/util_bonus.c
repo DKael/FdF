@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   util_bonus.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hyungdki <hyungdki@student.42seoul.kr>     +#+  +:+       +#+        */
+/*   By: hyungdki <hyungdki@student.42seoul>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/26 19:36:24 by hyungdki          #+#    #+#             */
-/*   Updated: 2023/06/29 18:26:39 by hyungdki         ###   ########.fr       */
+/*   Updated: 2023/07/02 10:32:34 by hyungdki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,6 +80,8 @@ void	fdf_init(t_fdf *fdf, t_map *map)
 	fdf->rot_speed = 1;
 	fdf->dtheta = 0;
 	fdf->dphi = 0;
+	fdf->l_mouse_clk = FALSE;
+	fdf->r_mouse_clk = FALSE;
 }
 
 void	map_init(t_map *map)
