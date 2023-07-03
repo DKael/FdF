@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   event_bonus.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hyungdki <hyungdki@student.42seoul.kr>     +#+  +:+       +#+        */
+/*   By: hyungdki <hyungdki@student.42seoul>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/26 19:47:42 by hyungdki          #+#    #+#             */
-/*   Updated: 2023/07/03 14:08:07 by hyungdki         ###   ########.fr       */
+/*   Updated: 2023/07/04 00:14:42 by hyungdki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -113,18 +113,64 @@ int mouse_click(int button, int x, int y, t_fdf *fdf)
 			fdf->old_x = x;
 			fdf->old_y = y;
 		}
-		if (button == SCROLLUP_KEY && fdf->map_ptr->basic_len < 200.0)
+		if (button == SCROLLUP_KEY && fdf->map_ptr->basic_len_index < 100)
 		{
-			fdf->map_ptr->basic_len += 0.5;
-			if (fdf->map_ptr->basic_len > 200.0)
-				fdf->map_ptr->basic_len = 200.0;
+			int dx1;
+			int dx2;
+			int dy1;
+			int dy2;
+			int center_x;
+			int center_y;
+			double pre_len;
+
+			pre_len = fdf->map_ptr->basic_len;
+			fdf->map_ptr->basic_len_index += 1;
+			fdf->map_ptr->basic_len = pow(ZOOM_VALUE, fdf->map_ptr->basic_len_index);
+			center_x = fdf->map_ptr->midpoint_x2d + fdf->x2d_move;
+			center_y = fdf->map_ptr->midpoint_y2d + fdf->y2d_move;
+			dx1 = abs(x  - center_x);
+			dx2 = (int)(dx1 * (fdf->map_ptr->basic_len / pre_len) + 0.5);
+			dy1 = abs(y  - center_y);
+			dy2 = (int)(dy1 * (fdf->map_ptr->basic_len / pre_len) + 0.5);
+			if (x > center_x)
+				fdf->x2d_move -= (dx2 - dx1);
+			else 
+				fdf->x2d_move += (dx2 - dx1);
+			if (y > center_y)
+				fdf->y2d_move += (dy2 - dy1);
+			else 
+				fdf->y2d_move -= (dy2 - dy1);
+			printf("x move : %d, y move : %d\n", fdf->x2d_move, fdf->y2d_move);
 			fdf->zoom_change = TRUE;
 		}
-		else if (button == SCROLLDOWN_KEY && fdf->map_ptr->basic_len > 0.0)
+		else if (button == SCROLLDOWN_KEY && fdf->map_ptr->basic_len_index > -10)
 		{
-			fdf->map_ptr->basic_len -= 0.5;
-			if (fdf->map_ptr->basic_len <= 0.0)
-				fdf->map_ptr->basic_len = 0.1;
+			int dx1;
+			int dx2;
+			int dy1;
+			int dy2;
+			int center_x;
+			int center_y;
+			double pre_len;
+
+			pre_len = fdf->map_ptr->basic_len;
+			fdf->map_ptr->basic_len_index -= 1;
+			fdf->map_ptr->basic_len = pow(ZOOM_VALUE, fdf->map_ptr->basic_len_index);
+			center_x = fdf->map_ptr->midpoint_x2d + fdf->x2d_move;
+			center_y = fdf->map_ptr->midpoint_y2d + fdf->y2d_move;
+			dx1 = abs(x  - center_x);
+			dx2 = (int)(dx1 * (fdf->map_ptr->basic_len / pre_len) + 0.5);
+			dy1 = abs(y  - center_y);
+			dy2 = (int)(dy1 * (fdf->map_ptr->basic_len / pre_len) + 0.5);
+			if (x > center_x)
+				fdf->x2d_move += (dx1 - dx2);
+			else 
+				fdf->x2d_move -= (dx1 - dx2);
+			if (y > center_y)
+				fdf->y2d_move -= (dy1 - dy2);
+			else 
+				fdf->y2d_move += (dy1 - dy2);
+			printf("x move : %d, y move : %d\n", fdf->x2d_move, fdf->y2d_move);
 			fdf->zoom_change = TRUE;
 		}
 	}
@@ -145,7 +191,7 @@ int	mouse_move(int x, int y, t_fdf *fdf)
 {
 	int	dx;
 	int	dy;
-
+	
 	if ((0 <= x && x < fdf->win_size_x) && (0 <= y && y < fdf->win_size_y))
 	{
 		if (fdf->l_mouse_clk)

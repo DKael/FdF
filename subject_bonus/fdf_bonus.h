@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   fdf_bonus.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hyungdki <hyungdki@student.42seoul.kr>     +#+  +:+       +#+        */
+/*   By: hyungdki <hyungdki@student.42seoul>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/30 17:58:15 by hyungdki          #+#    #+#             */
-/*   Updated: 2023/07/02 20:05:00 by hyungdki         ###   ########.fr       */
+/*   Updated: 2023/07/03 23:34:01 by hyungdki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,6 +31,9 @@
 # define ISO_Y 0.7
 # define RADIAN 0.017453292519943
 # define PI 3.141592653589793
+# define EPSILON 0.0000000001
+# define ZOOM_VALUE 1.054411903082687
+# define ZOOM_LOG10 0.02301029995664
 # if !defined(TRUE) && !defined(FALSE)
 #  define TRUE 1
 #  define FALSE 0
@@ -73,6 +76,7 @@ typedef struct s_map
 	double		len_x2d;
 	double		len_y2d;
 	double		basic_len;
+	int			basic_len_index;
 	int			fd;
 }	t_map;
 
@@ -145,6 +149,7 @@ void	get_rotated_point(t_map *map, double dtheta, double dphi);
 void			calc_win_size(t_map *map);
 void			enlarge_image(t_map *map);
 t_bool	in_window(t_fdf *fdf, t_point p);
+t_bool	should_draw_line(t_fdf *fdf, t_point p1, t_point p2);
 void			draw(t_fdf *fdf, t_map *map);
 void			add_move(t_fdf *fdf, t_map *map);
 void			screen_clear(t_fdf *fdf, int image_num);

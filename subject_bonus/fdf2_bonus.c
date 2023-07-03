@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   fdf2_bonus.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hyungdki <hyungdki@student.42seoul.kr>     +#+  +:+       +#+        */
+/*   By: hyungdki <hyungdki@student.42seoul>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/26 20:49:55 by hyungdki          #+#    #+#             */
-/*   Updated: 2023/07/02 20:01:28 by hyungdki         ###   ########.fr       */
+/*   Updated: 2023/07/04 00:14:04 by hyungdki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,16 +88,14 @@ void	calc_win_size(t_map *map)
 		c = -1;
 		while (++c < map->col)
 		{
-			if (map->map[r][c].x2d > map->largest_x2d)
-				map->largest_x2d = map->map[r][c].x2d;
-			else if (map->map[r][c].x2d < map->smallest_x2d)
-				map->smallest_x2d = map->map[r][c].x2d;
 			if (map->map[r][c].y2d > map->largest_y2d)
 				map->largest_y2d = map->map[r][c].y2d;
 			else if (map->map[r][c].y2d < map->smallest_y2d)
 				map->smallest_y2d = map->map[r][c].y2d;
 		}
 	}
+	map->largest_x2d = map->map[0][map->col - 1].x2d;
+	map->smallest_x2d = map->map[map->row - 1][0].x2d;
 	calc_win_size2(map);
 }
 
@@ -105,12 +103,17 @@ static void	calc_win_size2(t_map *map)
 {
 	map->len_x2d = map->largest_x2d - map->smallest_x2d;
 	map->len_y2d = map->largest_y2d - map->smallest_y2d;
-	if (map->len_x2d * ((double)WINDOW_SIZE_Y / WINDOW_SIZE_X) > map->len_y2d)
+	if (map->len_x2d * WINDOW_SIZE_Y > map->len_y2d * WINDOW_SIZE_X)
 		map->basic_len = WINDOW_SIZE_X / map->len_x2d;
 	else
 		map->basic_len = WINDOW_SIZE_Y / map->len_y2d;
-	map->midpoint_x2d = WINDOW_SIZE_X / 2
-		- (int)((map->largest_x2d + map->smallest_x2d) * map->basic_len) / 2;
+	map->basic_len_index = (int)(log10(map->basic_len) / ZOOM_LOG10 + 0.5);
+	if (map->basic_len_index >= 100)
+		map->basic_len_index = 100;
+	else if (map->basic_len_index <= -10)
+		map->basic_len_index = -10;
+	map->basic_len = pow(ZOOM_VALUE, map->basic_len_index);
+	map->midpoint_x2d = WINDOW_SIZE_X / 2;
 	map->midpoint_y2d = WINDOW_SIZE_Y / 2
 		- (int)((map->largest_y2d + map->smallest_y2d) * map->basic_len) / 2;
 }
@@ -145,6 +148,47 @@ t_bool	in_window(t_fdf *fdf, t_point p)
 		return (FALSE);
 }
 
+t_bool	should_draw_line(t_fdf *fdf, t_point p1, t_point p2)
+{
+	double	slope;
+	int		p1x;
+	int		p2x;
+	int		p1y;
+	int		p2y;
+
+	p1x = p1.rx2d + fdf->x2d_move;
+	p2x = p2.rx2d + fdf->x2d_move;
+	p1y = p1.ry2d + fdf->y2d_move;
+	p2y = p2.ry2d + fdf->y2d_move;
+	if (p2x != p1x)
+	{
+		slope = ((double)(p2y - p1y) / (p2x - p1x));
+		if (slope > 0.0)
+		{
+			if (p2y - p2x * slope < fdf->win_size_y && slope * (fdf->win_size_x - 1 - p2x) + p2y >= 0)
+				return (TRUE);
+		}
+		else if (slope < 0.0)
+		{
+			if (p2y - slope * p2x >= 0 && slope * (fdf->win_size_x - 1 - p2x) + p2y < fdf->win_size_y)
+				return (TRUE);
+		}
+		else
+		{
+			if (0 <= p2y && p2y < fdf->win_size_y)
+				if (!((p2x < 0 && p1x < 0) || (p2x >= fdf->win_size_x && p1x >= fdf->win_size_x)))
+					return (TRUE);
+		}
+	}
+	else
+	{
+		if (0 <= p2x && p2x < fdf->win_size_x)
+			if (!((p2y < 0 && p1y < 0) || (p2y >= fdf->win_size_y && p1y >= fdf->win_size_y)))
+				return (TRUE);
+	}
+	return (FALSE);
+}
+
 void	draw(t_fdf *fdf, t_map *map)
 {
 	int	r;
@@ -163,11 +207,11 @@ void	draw(t_fdf *fdf, t_map *map)
 					if (in_window(fdf, map->map[r][c]) == TRUE)
 						mlx_pixel_put_at_mem(fdf, map->map[r][c].rx2d,
 							map->map[r][c].ry2d, map->map[r][c].color.color);
-					if (in_window(fdf, map->map[r][c]) == TRUE || in_window(fdf, map->map[r][c + 1]) == TRUE)
+					if (should_draw_line(fdf, map->map[r][c], map->map[r][c + 1]) == TRUE)
 						draw_line(fdf, map->map[r][c], map->map[r][c + 1]);
 					if (r < map->row - 1)
 					{
-						if (in_window(fdf, map->map[r][c]) == TRUE || in_window(fdf, map->map[r + 1][c]) == TRUE)
+						if (should_draw_line(fdf, map->map[r][c], map->map[r + 1][c]) == TRUE)
 							draw_line(fdf, map->map[r][c], map->map[r + 1][c]);
 						if (!is_flat(map->map[r][c], map->map[r][c + 1],
 							map->map[r + 1][c], map->map[r + 1][c + 1]))
@@ -176,7 +220,7 @@ void	draw(t_fdf *fdf, t_map *map)
 				}
 				if (r < map->row - 1)
 				{
-					if (in_window(fdf, map->map[r][c]) == TRUE || in_window(fdf, map->map[r + 1][c]) == TRUE)
+					if (should_draw_line(fdf, map->map[r][c], map->map[r + 1][c]) == TRUE)
 						draw_line(fdf, map->map[r][c], map->map[r + 1][c]);
 				}
 				
@@ -193,11 +237,11 @@ void	draw(t_fdf *fdf, t_map *map)
 					if (in_window(fdf, map->map[r][c]) == TRUE)
 						mlx_pixel_put_at_mem(fdf, map->map[r][c].rx2d,
 							map->map[r][c].ry2d, map->map[r][c].color.color);
-					if (in_window(fdf, map->map[r][c]) == TRUE || in_window(fdf, map->map[r - 1][c]) == TRUE)
+					if (should_draw_line(fdf, map->map[r][c], map->map[r - 1][c]) == TRUE)
 						draw_line(fdf, map->map[r][c], map->map[r - 1][c]);
 					if (c < map->col - 1)
 					{
-						if (in_window(fdf, map->map[r][c]) == TRUE || in_window(fdf, map->map[r][c + 1]) == TRUE)
+						if (should_draw_line(fdf, map->map[r][c], map->map[r][c + 1]) == TRUE)
 							draw_line(fdf, map->map[r][c], map->map[r][c + 1]);
 						if (!is_flat(map->map[r][c], map->map[r][c + 1],
 							map->map[r - 1][c], map->map[r - 1][c + 1]))
@@ -206,7 +250,7 @@ void	draw(t_fdf *fdf, t_map *map)
 				}
 				if (c < map->col - 1)
 				{
-					if (in_window(fdf, map->map[r][c]) == TRUE || in_window(fdf, map->map[r][c + 1]) == TRUE)
+					if (should_draw_line(fdf, map->map[r][c], map->map[r][c + 1]) == TRUE)
 						draw_line(fdf, map->map[r][c], map->map[r][c + 1]);
 				}
 			}
@@ -222,11 +266,11 @@ void	draw(t_fdf *fdf, t_map *map)
 					if (in_window(fdf, map->map[r][c]) == TRUE)
 						mlx_pixel_put_at_mem(fdf, map->map[r][c].rx2d,
 							map->map[r][c].ry2d, map->map[r][c].color.color);
-					if (in_window(fdf, map->map[r][c]) == TRUE || in_window(fdf, map->map[r][c - 1]) == TRUE)
+					if (should_draw_line(fdf, map->map[r][c], map->map[r][c - 1]) == TRUE)
 						draw_line(fdf, map->map[r][c], map->map[r][c - 1]);
 					if (r > 0)
 					{
-						if (in_window(fdf, map->map[r][c]) == TRUE || in_window(fdf, map->map[r - 1][c]) == TRUE)
+						if (should_draw_line(fdf, map->map[r][c], map->map[r - 1][c]) == TRUE)
 							draw_line(fdf, map->map[r][c], map->map[r - 1][c]);
 						if (!is_flat(map->map[r][c], map->map[r][c - 1],
 							map->map[r - 1][c], map->map[r - 1][c - 1]))
@@ -235,7 +279,7 @@ void	draw(t_fdf *fdf, t_map *map)
 				}
 				if (r > 0)
 				{
-					if (in_window(fdf, map->map[r][c]) == TRUE || in_window(fdf, map->map[r - 1][c]) == TRUE)
+					if (should_draw_line(fdf, map->map[r][c], map->map[r - 1][c]) == TRUE)
 						draw_line(fdf, map->map[r][c], map->map[r - 1][c]);
 				}
 			}
@@ -251,11 +295,11 @@ void	draw(t_fdf *fdf, t_map *map)
 					if (in_window(fdf, map->map[r][c]) == TRUE)
 						mlx_pixel_put_at_mem(fdf, map->map[r][c].rx2d,
 							map->map[r][c].ry2d, map->map[r][c].color.color);
-					if (in_window(fdf, map->map[r][c]) == TRUE || in_window(fdf, map->map[r + 1][c]) == TRUE)
+					if (should_draw_line(fdf, map->map[r][c], map->map[r + 1][c]) == TRUE)
 						draw_line(fdf, map->map[r][c], map->map[r + 1][c]);
 					if (c > 0)
 					{
-						if (in_window(fdf, map->map[r][c]) == TRUE || in_window(fdf, map->map[r][c - 1]) == TRUE)
+						if (should_draw_line(fdf, map->map[r][c], map->map[r][c - 1]) == TRUE)
 							draw_line(fdf, map->map[r][c], map->map[r][c - 1]);
 						if (!is_flat(map->map[r][c], map->map[r + 1][c],
 							map->map[r][c - 1], map->map[r + 1][c - 1]))
@@ -264,7 +308,7 @@ void	draw(t_fdf *fdf, t_map *map)
 				}
 				if (c > 0)
 				{
-					if (in_window(fdf, map->map[r][c]) == TRUE || in_window(fdf, map->map[r][c - 1]) == TRUE)
+					if (should_draw_line(fdf, map->map[r][c], map->map[r][c - 1]) == TRUE)
 						draw_line(fdf, map->map[r][c], map->map[r][c - 1]);
 				}
 			}
@@ -283,11 +327,11 @@ void	draw(t_fdf *fdf, t_map *map)
 					if (in_window(fdf, map->map[r][c]) == TRUE)
 						mlx_pixel_put_at_mem(fdf, map->map[r][c].rx2d,
 							map->map[r][c].ry2d, map->map[r][c].color.color);
-					if (in_window(fdf, map->map[r][c]) == TRUE || in_window(fdf, map->map[r][c - 1]) == TRUE)
+					if (should_draw_line(fdf, map->map[r][c], map->map[r][c - 1]) == TRUE)
 						draw_line(fdf, map->map[r][c], map->map[r][c - 1]);
 					if (r > 0)
 					{
-						if (in_window(fdf, map->map[r][c]) == TRUE || in_window(fdf, map->map[r - 1][c]) == TRUE)
+						if (should_draw_line(fdf, map->map[r][c], map->map[r - 1][c]) == TRUE)
 							draw_line(fdf, map->map[r][c], map->map[r - 1][c]);
 						if (!is_flat(map->map[r][c], map->map[r][c - 1],
 							map->map[r - 1][c], map->map[r - 1][c - 1]))
@@ -296,7 +340,7 @@ void	draw(t_fdf *fdf, t_map *map)
 				}
 				if (r > 0)
 				{
-					if (in_window(fdf, map->map[r][c]) == TRUE || in_window(fdf, map->map[r - 1][c]) == TRUE)
+					if (should_draw_line(fdf, map->map[r][c], map->map[r - 1][c]) == TRUE)
 						draw_line(fdf, map->map[r][c], map->map[r - 1][c]);
 				}
 			}
@@ -312,11 +356,11 @@ void	draw(t_fdf *fdf, t_map *map)
 					if (in_window(fdf, map->map[r][c]) == TRUE)
 						mlx_pixel_put_at_mem(fdf, map->map[r][c].rx2d,
 							map->map[r][c].ry2d, map->map[r][c].color.color);
-					if (in_window(fdf, map->map[r][c]) == TRUE || in_window(fdf, map->map[r + 1][c]) == TRUE)
+					if (should_draw_line(fdf, map->map[r][c], map->map[r + 1][c]) == TRUE)
 						draw_line(fdf, map->map[r][c], map->map[r + 1][c]);
 					if (c > 0)
 					{
-						if (in_window(fdf, map->map[r][c]) == TRUE || in_window(fdf, map->map[r][c - 1]) == TRUE)
+						if (should_draw_line(fdf, map->map[r][c], map->map[r][c - 1]) == TRUE)
 							draw_line(fdf, map->map[r][c], map->map[r][c - 1]);
 						if (!is_flat(map->map[r][c], map->map[r + 1][c],
 							map->map[r][c - 1], map->map[r + 1][c - 1]))
@@ -325,7 +369,7 @@ void	draw(t_fdf *fdf, t_map *map)
 				}
 				if (c > 0)
 				{
-					if (in_window(fdf, map->map[r][c]) == TRUE || in_window(fdf, map->map[r][c - 1]) == TRUE)
+					if (should_draw_line(fdf, map->map[r][c], map->map[r][c - 1]) == TRUE)
 						draw_line(fdf, map->map[r][c], map->map[r][c - 1]);
 				}
 			}
@@ -341,11 +385,11 @@ void	draw(t_fdf *fdf, t_map *map)
 					if (in_window(fdf, map->map[r][c]) == TRUE)
 						mlx_pixel_put_at_mem(fdf, map->map[r][c].rx2d,
 							map->map[r][c].ry2d, map->map[r][c].color.color);
-					if (in_window(fdf, map->map[r][c]) == TRUE || in_window(fdf, map->map[r][c + 1]) == TRUE)
+					if (should_draw_line(fdf, map->map[r][c], map->map[r][c + 1]) == TRUE)
 						draw_line(fdf, map->map[r][c], map->map[r][c + 1]);
 					if (r < map->row - 1)
 					{
-						if (in_window(fdf, map->map[r][c]) == TRUE || in_window(fdf, map->map[r + 1][c]) == TRUE)
+						if (should_draw_line(fdf, map->map[r][c], map->map[r + 1][c]) == TRUE)
 							draw_line(fdf, map->map[r][c], map->map[r + 1][c]);
 						if (!is_flat(map->map[r][c], map->map[r][c + 1],
 							map->map[r + 1][c], map->map[r + 1][c + 1]))
@@ -354,7 +398,7 @@ void	draw(t_fdf *fdf, t_map *map)
 				}
 				if (r < map->row - 1)
 				{
-					if (in_window(fdf, map->map[r][c]) == TRUE || in_window(fdf, map->map[r + 1][c]) == TRUE)
+					if (should_draw_line(fdf, map->map[r][c], map->map[r + 1][c]) == TRUE)
 						draw_line(fdf, map->map[r][c], map->map[r + 1][c]);
 				}
 			}
@@ -370,11 +414,11 @@ void	draw(t_fdf *fdf, t_map *map)
 					if (in_window(fdf, map->map[r][c]) == TRUE)
 						mlx_pixel_put_at_mem(fdf, map->map[r][c].rx2d,
 							map->map[r][c].ry2d, map->map[r][c].color.color);
-					if (in_window(fdf, map->map[r][c]) == TRUE || in_window(fdf, map->map[r - 1][c]) == TRUE)
+					if (should_draw_line(fdf, map->map[r][c], map->map[r - 1][c]) == TRUE)
 						draw_line(fdf, map->map[r][c], map->map[r - 1][c]);
 					if (c < map->col - 1)
 					{
-						if (in_window(fdf, map->map[r][c]) == TRUE || in_window(fdf, map->map[r][c + 1]) == TRUE)
+						if (should_draw_line(fdf, map->map[r][c], map->map[r][c + 1]) == TRUE)
 							draw_line(fdf, map->map[r][c], map->map[r][c + 1]);
 						if (!is_flat(map->map[r][c], map->map[r][c + 1],
 							map->map[r - 1][c], map->map[r - 1][c + 1]))
@@ -383,7 +427,7 @@ void	draw(t_fdf *fdf, t_map *map)
 				}
 				if (c < map->col - 1)
 				{
-					if (in_window(fdf, map->map[r][c]) == TRUE || in_window(fdf, map->map[r][c + 1]) == TRUE)
+					if (should_draw_line(fdf, map->map[r][c], map->map[r][c + 1]) == TRUE)
 						draw_line(fdf, map->map[r][c], map->map[r][c + 1]);
 				}
 			}
