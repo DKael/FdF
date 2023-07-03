@@ -6,7 +6,7 @@
 /*   By: hyungdki <hyungdki@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/26 20:27:35 by hyungdki          #+#    #+#             */
-/*   Updated: 2023/07/02 19:49:17 by hyungdki         ###   ########.fr       */
+/*   Updated: 2023/07/03 14:11:15 by hyungdki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,7 +74,6 @@ static void	fdf2(t_fdf *fdf, t_map *map)
 
 int	loop_func(t_fdf *fdf)
 {
-	
 	if (fdf->loc_change == TRUE || fdf->zoom_change == TRUE || fdf->rotate_change == TRUE)
 	{
 		if (fdf->cur_image == 0)

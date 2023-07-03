@@ -6,7 +6,7 @@
 /*   By: hyungdki <hyungdki@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/26 19:47:42 by hyungdki          #+#    #+#             */
-/*   Updated: 2023/07/02 20:39:07 by hyungdki         ###   ########.fr       */
+/*   Updated: 2023/07/03 14:08:07 by hyungdki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,25 +46,14 @@ int	key_event(int keycode, t_fdf *fdf)
 static void	image_move(int keycode, t_fdf *fdf)
 {
 	if(keycode == LEFT_KEY)
-	{
 		fdf->x2d_move += fdf->move_speed;
-		fdf->loc_change = TRUE;
-	}
 	else if(keycode == RIGHT_KEY)
-	{
 		fdf->x2d_move -= fdf->move_speed;
-		fdf->loc_change = TRUE;
-	}
 	if(keycode == UP_KEY)
-	{
 		fdf->y2d_move += fdf->move_speed;
-		fdf->loc_change = TRUE;
-	}
 	else if(keycode == DOWN_KEY)
-	{
 		fdf->y2d_move -= fdf->move_speed;
-		fdf->loc_change = TRUE;
-	}
+	fdf->loc_change = TRUE;
 }
 
 static void	move_speed(int keycode, t_fdf *fdf)
@@ -86,30 +75,26 @@ static void image_rotate(int keycode, t_fdf *fdf)
 		fdf->dtheta += fdf->rot_speed;
 		if (fdf->dtheta >= 360)
 			fdf->dtheta -= 360;
-		fdf->rotate_change = TRUE;
 	}
 	else if (keycode == W_KEY)
 	{
 		fdf->dtheta -= fdf->rot_speed;
 		if (fdf->dtheta < 0)
 			fdf->dtheta += 360;
-		fdf->rotate_change = TRUE;
 	}
 	if (keycode == D_KEY)
 	{
 		fdf->dphi += fdf->rot_speed;
 		if (fdf->dphi >= 360)
 			fdf->dphi -= 360;
-		fdf->rotate_change = TRUE;
-		fdf->rotate_change = TRUE;
 	}
 	else if (keycode == A_KEY)
 	{
 		fdf->dphi -= fdf->rot_speed;
 		if (fdf->dphi < 0)
 			fdf->dphi += 360;
-		fdf->rotate_change = TRUE;
 	}
+	fdf->rotate_change = TRUE;
 }
 
 int mouse_click(int button, int x, int y, t_fdf *fdf)
@@ -192,7 +177,7 @@ int	mouse_move(int x, int y, t_fdf *fdf)
 			{	
 				if (dx > 0)
 					image_rotate(A_KEY,fdf);
-			else if (dx < 0)
+				else if (dx < 0)
 					image_rotate(D_KEY,fdf);
 			}
 			else
