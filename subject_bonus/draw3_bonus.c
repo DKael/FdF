@@ -6,7 +6,7 @@
 /*   By: hyungdki <hyungdki@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/26 20:17:09 by hyungdki          #+#    #+#             */
-/*   Updated: 2023/07/02 19:41:35 by hyungdki         ###   ########.fr       */
+/*   Updated: 2023/07/23 17:57:17 by hyungdki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,7 @@ void	mlx_pixels_put_at_mem(t_fdf *fdf, t_point *p_box, t_color *c_box, int num)
 	}
 }
 
-t_color	*calc_color(t_point sp, t_point bp, int np)
+t_color	*calc_color(t_color sp, t_color bp, int np)
 {
 	double	color_dif[4];
 	t_color	*c_box;
@@ -57,7 +57,7 @@ t_color	*calc_color(t_point sp, t_point bp, int np)
 		return (T_NULL);
 	idx = -1;
 	while (++idx < 4)
-		color_dif[idx] = ((int)bp.color.trgb[idx] - (int)sp.color.trgb[idx])
+		color_dif[idx] = ((int)bp.trgb[idx] - (int)sp.trgb[idx])
 			/ (double)np;
 	idx1 = -1;
 	while (++idx1 < np)
@@ -65,7 +65,7 @@ t_color	*calc_color(t_point sp, t_point bp, int np)
 		idx = -1;
 		while (++idx < 4)
 			c_box[idx1].trgb[idx] = (unsigned char)
-				((double)sp.color.trgb[idx]
+				((double)sp.trgb[idx]
 					+ color_dif[idx] * (idx1 + 1) + 0.5);
 	}
 	return (c_box);

@@ -6,7 +6,7 @@
 /*   By: hyungdki <hyungdki@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/26 20:49:55 by hyungdki          #+#    #+#             */
-/*   Updated: 2023/06/27 13:53:15 by hyungdki         ###   ########.fr       */
+/*   Updated: 2023/07/04 16:39:47 by hyungdki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,8 +31,8 @@ void	convert_point(t_map *map)
 				map->largest_x2d = map->map[r][c].x2d;
 			else if (map->map[r][c].x2d < map->smallest_x2d)
 				map->smallest_x2d = map->map[r][c].x2d;
-			map->map[r][c].y2d = (map->map[r][c].x + map->map[r][c].y) * ISO_Y
-				- map->map[r][c].z;
+			map->map[r][c].y2d = (map->map[r][c].x + map->map[r][c].y
+				- map->map[r][c].z) * ISO_Y;
 			if (map->map[r][c].y2d > map->largest_y2d)
 				map->largest_y2d = map->map[r][c].y2d;
 			else if (map->map[r][c].y2d < map->smallest_y2d)

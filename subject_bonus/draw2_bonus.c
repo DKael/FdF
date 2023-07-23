@@ -6,7 +6,7 @@
 /*   By: hyungdki <hyungdki@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/26 20:05:15 by hyungdki          #+#    #+#             */
-/*   Updated: 2023/07/02 16:35:52 by hyungdki         ###   ########.fr       */
+/*   Updated: 2023/07/23 18:03:10 by hyungdki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,16 +41,21 @@ static void	draw_line_move_x2(t_fdf *fdf, t_point sxp, t_point bxp)
 	int		np;
 
 	np = bxp.rx2d - sxp.rx2d - 1;
-	color_box = calc_color(sxp, bxp, np);
+	if (fdf->color_mode == 0)
+		color_box = calc_color(sxp.color, bxp.color, np);
+	else
+		color_box = calc_color(fdf->contour_color[(int)(sxp.z - fdf->map_ptr->smallest_z)], fdf->contour_color[(int)(bxp.z - fdf->map_ptr->smallest_z)], np);
 	if (color_box == T_NULL)
 	{
 		free_2d_array((void *)fdf->map_ptr->map);
+		free(fdf->contour_color);
 		err_msg("malloc error!", 1, FALSE);
 	}
 	point_box = (t_point *)malloc(sizeof(t_point) * np);
 	if (point_box == T_NULL)
 	{
 		free_2d_array((void *)fdf->map_ptr->map);
+		free(fdf->contour_color);
 		free(color_box);
 		err_msg("malloc error!", 1, FALSE);
 	}
@@ -92,16 +97,21 @@ static void	draw_line_move_y2(t_fdf *fdf, t_point syp, t_point byp)
 	int		np;
 
 	np = byp.ry2d - syp.ry2d - 1;
-	color_box = calc_color(syp, byp, np);
+	if (fdf->color_mode == 0)
+		color_box = calc_color(syp.color, byp.color, np);
+	else
+		color_box = calc_color(fdf->contour_color[(int)(syp.z - fdf->map_ptr->smallest_z)], fdf->contour_color[(int)(byp.z - fdf->map_ptr->smallest_z)], np);
 	if (color_box == T_NULL)
 	{
 		free_2d_array((void *)fdf->map_ptr->map);
+		free(fdf->contour_color);
 		err_msg("malloc error!", 1, FALSE);
 	}
 	point_box = (t_point *)malloc(sizeof(t_point) * np);
 	if (point_box == T_NULL)
 	{
 		free_2d_array((void *)fdf->map_ptr->map);
+		free(fdf->contour_color);
 		free(color_box);
 		err_msg("malloc error!", 1, FALSE);
 	}

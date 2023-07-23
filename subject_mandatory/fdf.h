@@ -6,7 +6,7 @@
 /*   By: hyungdki <hyungdki@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/30 17:58:15 by hyungdki          #+#    #+#             */
-/*   Updated: 2023/06/27 15:19:30 by hyungdki         ###   ########.fr       */
+/*   Updated: 2023/07/04 16:39:51 by hyungdki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,8 +26,8 @@
 
 # define WINDOW_SIZE_X 1280
 # define WINDOW_SIZE_Y 1024
-# define ISO_X 0.866025
-# define ISO_Y 0.7
+# define ISO_X 0.866025403784439
+# define ISO_Y 0.5
 # if !defined(TRUE) && !defined(FALSE)
 #  define TRUE 1
 #  define FALSE 0

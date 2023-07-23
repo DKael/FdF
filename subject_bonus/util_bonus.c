@@ -6,7 +6,7 @@
 /*   By: hyungdki <hyungdki@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/26 19:36:24 by hyungdki          #+#    #+#             */
-/*   Updated: 2023/07/03 20:54:02 by hyungdki         ###   ########.fr       */
+/*   Updated: 2023/07/23 18:06:03 by hyungdki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,9 +75,7 @@ void	fdf_init(t_fdf *fdf, t_map *map)
 	fdf->map_ptr = map;
 	fdf->x2d_move = 0;
 	fdf->y2d_move = 0;
-	fdf->loc_change = FALSE;
-	fdf->zoom_change = FALSE;
-	fdf->rotate_change = FALSE;
+	fdf->flag = 0;
 	fdf->move_speed = 10;
 	fdf->rot_speed = 1;
 	fdf->dtheta = 0;
@@ -87,6 +85,9 @@ void	fdf_init(t_fdf *fdf, t_map *map)
 	fdf->old_x = -1;
 	fdf->old_y = -1;
 	fdf->cur_image = 0;
+	fdf->projection = 0;
+	fdf->color_mode = 0;
+	fdf->contour_color = T_NULL;
 }
 
 void	map_init(t_map *map)

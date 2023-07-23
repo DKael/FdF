@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   fdf_bonus.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hyungdki <hyungdki@student.42seoul>        +#+  +:+       +#+        */
+/*   By: hyungdki <hyungdki@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/30 17:58:15 by hyungdki          #+#    #+#             */
-/*   Updated: 2023/07/03 23:34:01 by hyungdki         ###   ########.fr       */
+/*   Updated: 2023/07/23 17:46:37 by hyungdki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,12 +28,19 @@
 # define WINDOW_SIZE_X 1280
 # define WINDOW_SIZE_Y 1024
 # define ISO_X 0.866025403784439
-# define ISO_Y 0.7
+# define ISO_Y 0.5
+# define ROOT2 1.414213562373095
+# define RROOT2 0.707106781186548
 # define RADIAN 0.017453292519943
 # define PI 3.141592653589793
 # define EPSILON 0.0000000001
 # define ZOOM_VALUE 1.054411903082687
 # define ZOOM_LOG10 0.02301029995664
+# define MOVE_FLAG 1
+# define ZOOM_FLAG 2
+# define ROTATE_FLAG 4
+# define PROJ_FLAG 8
+# define COLOR_FLAG 16
 # if !defined(TRUE) && !defined(FALSE)
 #  define TRUE 1
 #  define FALSE 0
@@ -55,6 +62,12 @@ typedef struct s_point
 	double		x;
 	double		y;
 	double		z;
+	double		tx;
+	double		ty;
+	double		tz;
+	double		px;
+	double		py;
+	double		pz;
 	int			rx2d;
 	int			ry2d;
 	double		x2d;
@@ -77,7 +90,10 @@ typedef struct s_map
 	double		len_y2d;
 	double		basic_len;
 	int			basic_len_index;
+	double		largest_z;
+	double		smallest_z;
 	int			fd;
+	t_point		prj_ptr;
 }	t_map;
 
 typedef struct s_fdf
@@ -98,14 +114,15 @@ typedef struct s_fdf
 	int		rot_speed;
 	int		dtheta;
 	int		dphi;
-	t_bool	loc_change;
-	t_bool	zoom_change;
-	t_bool	rotate_change;
+	int		flag;
 	t_bool	l_mouse_clk;
 	t_bool	r_mouse_clk;
 	int		old_x;
 	int		old_y;
 	int		cur_image;
+	int		projection;
+	int		color_mode;
+	t_color	*contour_color;
 }	t_fdf;
 
 typedef struct s_angle
@@ -129,14 +146,14 @@ void			draw_line_move_y(t_fdf *fdf, t_point p1, t_point p2);
 //draw3.c
 void			mlx_pixel_put_at_mem(t_fdf *fdf, int x, int y, int color);
 void	mlx_pixels_put_at_mem(t_fdf *fdf, t_point *p_box, t_color *c_box, int num);
-t_color			*calc_color(t_point sp, t_point bp, int np);
+t_color			*calc_color(t_color sp, t_color bp, int np);
 // error.c
 void			err_init(char **argv);
 void			err_msg(const char *msg, int exit_code, t_bool use_perror);
 void			map_parsing_on_error(t_map *map, char **split_result);
 // event.c
 int				press_cross_on_window_frame(t_fdf *fdf);
-int				key_event(int keycode, t_fdf *fdf);
+int				key_event(int key, t_fdf *fdf);
 int				mouse_click(int button, int x, int y, t_fdf *fdf);
 int	mouse_release(int button, int x, int y, t_fdf *fdf);
 int	mouse_move(int x, int y, t_fdf *fdf);
@@ -146,8 +163,10 @@ void			fdf(char **argv);
 void			convert_point(t_map *map);
 double	get_length(t_point p);
 void	get_rotated_point(t_map *map, double dtheta, double dphi);
-void			calc_win_size(t_map *map);
+void			get_map_data(t_map *map);
 void			enlarge_image(t_map *map);
+void	isometric_projection(t_map *map);
+void	perspective_projection(t_map *map);
 t_bool	in_window(t_fdf *fdf, t_point p);
 t_bool	should_draw_line(t_fdf *fdf, t_point p1, t_point p2);
 void			draw(t_fdf *fdf, t_map *map);
