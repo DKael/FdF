@@ -6,7 +6,7 @@
 #    By: hyungdki <hyungdki@student.42seoul.kr>     +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/05/03 20:30:42 by hyungdki          #+#    #+#              #
-#    Updated: 2023/06/27 13:28:40 by hyungdki         ###   ########.fr        #
+#    Updated: 2023/07/25 17:37:59 by hyungdki         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -26,17 +26,27 @@ SRCS =	./subject_mandatory/main.c	\
 OBJS = 	${SRCS:.c=.o}
 
 SRCS_BONUS =	./subject_bonus/main_bonus.c	\
+				./subject_bonus/color_calc_bonus.c \
 				./subject_bonus/draw_diagonal1_bonus.c  \
 				./subject_bonus/draw_diagonal2_bonus.c  \
 				./subject_bonus/draw1_bonus.c  \
 				./subject_bonus/draw2_bonus.c  \
 				./subject_bonus/draw3_bonus.c  \
+				./subject_bonus/draw4_bonus.c  \
+				./subject_bonus/draw5_bonus.c  \
+				./subject_bonus/draw6_bonus.c  \
+				./subject_bonus/draw7_bonus.c  \
 				./subject_bonus/error_bonus.c  \
-				./subject_bonus/event_bonus.c  \
-				./subject_bonus/fdf1_bonus.c  \
-				./subject_bonus/fdf2_bonus.c  \
+				./subject_bonus/event1_bonus.c  \
+				./subject_bonus/event2_bonus.c  \
+				./subject_bonus/event3_bonus.c  \
+				./subject_bonus/fdf_bonus.c  \
+				./subject_bonus/fdf_func_bonus.c  \
 				./subject_bonus/map_parsing_bonus.c  \
-				./subject_bonus/util_bonus.c  \
+				./subject_bonus/pixel_put_bonus.c \
+				./subject_bonus/point_calc_bonus.c \
+				./subject_bonus/util1_bonus.c  \
+				./subject_bonus/util2_bonus.c  \
 
 OBJS_BONUS = 	${SRCS_BONUS:.c=.o}
 

@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   util_bonus.c                                       :+:      :+:    :+:   */
+/*   util1_bonus.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: hyungdki <hyungdki@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/26 19:36:24 by hyungdki          #+#    #+#             */
-/*   Updated: 2023/07/23 18:06:03 by hyungdki         ###   ########.fr       */
+/*   Updated: 2023/07/25 17:38:05 by hyungdki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,42 +62,17 @@ t_bool	is_flat(t_point p1, t_point p2, t_point p3, t_point p4)
 		return (FALSE);
 }
 
-void	fdf_init(t_fdf *fdf, t_map *map)
+t_angle	calc_angle_func(int angle)
 {
-	fdf->mlx_ptr = T_NULL;
-	fdf->win_ptr = T_NULL;
-	fdf->img_ptr[0] = T_NULL;
-	fdf->img_addr[0] = T_NULL;
-	fdf->img_ptr[1] = T_NULL;
-	fdf->img_addr[1] = T_NULL;
-	fdf->win_size_x = WINDOW_SIZE_X;
-	fdf->win_size_y = WINDOW_SIZE_Y;
-	fdf->map_ptr = map;
-	fdf->x2d_move = 0;
-	fdf->y2d_move = 0;
-	fdf->flag = 0;
-	fdf->move_speed = 10;
-	fdf->rot_speed = 1;
-	fdf->dtheta = 0;
-	fdf->dphi = 0;
-	fdf->l_mouse_clk = FALSE;
-	fdf->r_mouse_clk = FALSE;
-	fdf->old_x = -1;
-	fdf->old_y = -1;
-	fdf->cur_image = 0;
-	fdf->projection = 0;
-	fdf->color_mode = 0;
-	fdf->contour_color = T_NULL;
-}
+	t_angle	return_value;
+	double	radian_angle;
 
-void	map_init(t_map *map)
-{
-	map->map = T_NULL;
-	map->row = 0;
-	map->col = 0;
-	map->fd = -1;
-	map->largest_x2d = (WINDOW_SIZE_X / 2) * -1;
-	map->largest_y2d = (WINDOW_SIZE_Y / 2) * -1;
-	map->smallest_x2d = WINDOW_SIZE_X / 2;
-	map->smallest_y2d = WINDOW_SIZE_Y / 2;
+	radian_angle = (double)angle * RADIAN;
+	return_value.sin = sin(radian_angle);
+	return_value.cos = cos(radian_angle);
+	if (angle == 90 || angle == 270)
+		return_value.tan = tan(radian_angle);
+	else
+		return_value.tan = 0;
+	return (return_value);
 }

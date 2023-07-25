@@ -6,11 +6,14 @@
 /*   By: hyungdki <hyungdki@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/26 20:05:15 by hyungdki          #+#    #+#             */
-/*   Updated: 2023/06/27 13:53:14 by hyungdki         ###   ########.fr       */
+/*   Updated: 2023/07/25 14:16:28 by hyungdki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "fdf.h"
+
+static void	draw_line_move_x2(t_fdf *fdf, t_point sxp, t_point bxp);
+static void	draw_line_move_y2(t_fdf *fdf, t_point syp, t_point byp);
 
 void	draw_line_move_x1(t_fdf *fdf, t_point p1, t_point p2)
 {

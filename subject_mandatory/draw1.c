@@ -6,11 +6,18 @@
 /*   By: hyungdki <hyungdki@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/26 19:37:34 by hyungdki          #+#    #+#             */
-/*   Updated: 2023/06/27 13:53:17 by hyungdki         ###   ########.fr       */
+/*   Updated: 2023/07/25 14:16:31 by hyungdki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "fdf.h"
+
+static void	draw_vertical_line(t_fdf *fdf, t_point p1, t_point p2);
+static void	draw_horizontal_line(t_fdf *fdf, t_point p1, t_point p2);
+static void	draw_line_slope_abs1(t_fdf *fdf, t_point p1, t_point p2);
+static void	draw_line_slope_abs2(t_fdf *fdf, t_point sxp, t_point bxp, int y);
+extern void	draw_line_move_x1(t_fdf *fdf, t_point p1, t_point p2);
+extern void	draw_line_move_y1(t_fdf *fdf, t_point p1, t_point p2);
 
 void	draw_line(t_fdf *fdf, t_point p1, t_point p2)
 {

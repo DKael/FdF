@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   draw_diagonal1_bonus.c                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hyungdki <hyungdki@student.42seoul>        +#+  +:+       +#+        */
+/*   By: hyungdki <hyungdki@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/26 19:48:23 by hyungdki          #+#    #+#             */
-/*   Updated: 2023/07/03 23:43:43 by hyungdki         ###   ########.fr       */
+/*   Updated: 2023/07/25 17:38:40 by hyungdki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,8 +50,9 @@ void	draw_line_diagonal(t_fdf *fdf, t_map *map, int r, int c)
 static t_bool	draw_line_diagonal_con1(int *z, t_fdf *fdf, int r, int c)
 {
 	if (((z[0] == z[1] && z[0] == z[2] && z[0] != z[3])
-		|| (z[3] == z[1] && z[3] == z[2] && z[3] != z[0]))
-		&& (should_draw_line(fdf, fdf->map_ptr->map[r][c], fdf->map_ptr->map[r + 1][c + 1])))
+			|| (z[3] == z[1] && z[3] == z[2] && z[3] != z[0]))
+		&& (should_draw_line(fdf,
+				fdf->map_ptr->map[r][c], fdf->map_ptr->map[r + 1][c + 1])))
 		return (TRUE);
 	else
 		return (FALSE);
@@ -60,8 +61,9 @@ static t_bool	draw_line_diagonal_con1(int *z, t_fdf *fdf, int r, int c)
 static t_bool	draw_line_diagonal_con2(int *z, t_fdf *fdf, int r, int c)
 {
 	if (((z[1] == z[0] && z[1] == z[3] && z[1] != z[2])
-		|| (z[2] == z[0] && z[2] == z[3] && z[2] != z[1]))
-		&& (should_draw_line(fdf, fdf->map_ptr->map[r][c + 1], fdf->map_ptr->map[r + 1][c])))
+			|| (z[2] == z[0] && z[2] == z[3] && z[2] != z[1]))
+		&& (should_draw_line(fdf,
+				fdf->map_ptr->map[r][c + 1], fdf->map_ptr->map[r + 1][c])))
 		return (TRUE);
 	else
 		return (FALSE);
@@ -70,7 +72,8 @@ static t_bool	draw_line_diagonal_con2(int *z, t_fdf *fdf, int r, int c)
 static t_bool	draw_line_diagonal_con3(int *z, t_fdf *fdf, int r, int c)
 {
 	if ((z[0] < z[1] && z[0] < z[2] && z[3] < z[1] && z[3] < z[2])
-	&& (should_draw_line(fdf, fdf->map_ptr->map[r][c], fdf->map_ptr->map[r + 1][c + 1])))
+		&& (should_draw_line(fdf,
+				fdf->map_ptr->map[r][c], fdf->map_ptr->map[r + 1][c + 1])))
 		return (TRUE);
 	else
 		return (FALSE);
@@ -79,7 +82,8 @@ static t_bool	draw_line_diagonal_con3(int *z, t_fdf *fdf, int r, int c)
 static t_bool	draw_line_diagonal_con4(int *z, t_fdf *fdf, int r, int c)
 {
 	if ((z[2] < z[3] && z[2] < z[0] && z[1] < z[3] && z[1] < z[0])
-	&& (should_draw_line(fdf, fdf->map_ptr->map[r][c + 1], fdf->map_ptr->map[r + 1][c])))
+		&& (should_draw_line(fdf,
+				fdf->map_ptr->map[r][c + 1], fdf->map_ptr->map[r + 1][c])))
 		return (TRUE);
 	else
 		return (FALSE);

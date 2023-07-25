@@ -6,7 +6,7 @@
 /*   By: hyungdki <hyungdki@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/30 17:58:15 by hyungdki          #+#    #+#             */
-/*   Updated: 2023/07/23 17:46:37 by hyungdki         ###   ########.fr       */
+/*   Updated: 2023/07/25 17:46:35 by hyungdki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -132,53 +132,55 @@ typedef struct s_angle
 	double	tan;
 }	t_angle;
 
+// color_calc_bonus.c
+void			make_contour_color(t_fdf *fdf, t_map *map);
+t_color			*calc_color(t_color sp, t_color bp, int np);
 // draw_diagonal1.c
 void			draw_line_diagonal(t_fdf *fdf, t_map *map, int r, int c);
-
 //draw1.c
-void			draw_line(t_fdf *fdf, t_point p1, t_point p2);
-void			draw_vertical_line(t_fdf *fdf, t_point p1, t_point p2);
-void			draw_horizontal_line(t_fdf *fdf, t_point p1, t_point p2);
-void			draw_line_slope_abs(t_fdf *fdf, t_point p1, t_point p2);
-//draw2.c
-void			draw_line_move_x(t_fdf *fdf, t_point p1, t_point p2);
-void			draw_line_move_y(t_fdf *fdf, t_point p1, t_point p2);
+void			draw(t_fdf *fdf, t_map *map);
 //draw3.c
-void			mlx_pixel_put_at_mem(t_fdf *fdf, int x, int y, int color);
-void	mlx_pixels_put_at_mem(t_fdf *fdf, t_point *p_box, t_color *c_box, int num);
-t_color			*calc_color(t_color sp, t_color bp, int np);
+void			draw_line(t_fdf *fdf, t_point p1, t_point p2);
 // error.c
 void			err_init(char **argv);
 void			err_msg(const char *msg, int exit_code, t_bool use_perror);
 void			map_parsing_on_error(t_map *map, char **split_result);
-// event.c
+// event1.c
 int				press_cross_on_window_frame(t_fdf *fdf);
 int				key_event(int key, t_fdf *fdf);
-int				mouse_click(int button, int x, int y, t_fdf *fdf);
-int	mouse_release(int button, int x, int y, t_fdf *fdf);
-int	mouse_move(int x, int y, t_fdf *fdf);
-// fdf1.c
+void			image_rotate(int keycode, t_fdf *fdf);
+// event2.c
+int				mouse_event(int button, int x, int y, t_fdf *fdf);
+int				mouse_release(int button, int x, int y, t_fdf *fdf);
+// event3.c
+int				mouse_drag(int x, int y, t_fdf *fdf);
+// fdf.c
 void			fdf(char **argv);
-// fdf2.c
-void			convert_point(t_map *map);
-double	get_length(t_point p);
-void	get_rotated_point(t_map *map, double dtheta, double dphi);
+// fdf_func_bonus.c
 void			get_map_data(t_map *map);
-void			enlarge_image(t_map *map);
-void	isometric_projection(t_map *map);
-void	perspective_projection(t_map *map);
-t_bool	in_window(t_fdf *fdf, t_point p);
-t_bool	should_draw_line(t_fdf *fdf, t_point p1, t_point p2);
-void			draw(t_fdf *fdf, t_map *map);
-void			add_move(t_fdf *fdf, t_map *map);
+t_bool			in_window(t_fdf *fdf, t_point p);
 void			screen_clear(t_fdf *fdf, int image_num);
 // map_parsing.c
 t_map			map_parsing(char **argv);
-// util.c
+// pixel_put_bonus.c
+void			mlx_pixel_put_at_mem(t_fdf *fdf, int x, int y, int color);
+void			mlx_pixels_put_at_mem(t_fdf *fdf,
+					t_point *p_box, t_color *c_box, int num);
+// point_calc_bonus.c
+void			convert_point(t_map *map);
+void			get_rotated_point(t_map *map, double dtheta, double dphi);
+void			isometric_projection(t_map *map);
+void			perspective_projection(t_map *map);
+void			enlarge_image(t_map *map);
+// util1.c
 void			free_2d_array(void **array);
 unsigned int	hex_str_to_uint(char *str_color);
 t_bool			is_flat(t_point p1, t_point p2, t_point p3, t_point p4);
+t_angle			calc_angle_func(int angle);
+// util2.c
+t_bool			should_draw_line(t_fdf *fdf, t_point p1, t_point p2);
 void			fdf_init(t_fdf *fdf, t_map *map);
 void			map_init(t_map *map);
+void			fdf_free(t_fdf *fdf);
 
 #endif

@@ -5,124 +5,136 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: hyungdki <hyungdki@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/06/26 20:05:15 by hyungdki          #+#    #+#             */
-/*   Updated: 2023/07/23 18:03:10 by hyungdki         ###   ########.fr       */
+/*   Created: 2023/07/25 17:24:50 by hyungdki          #+#    #+#             */
+/*   Updated: 2023/07/25 17:38:34 by hyungdki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "fdf_bonus.h"
 
-static void	draw_line_move_x2(t_fdf *fdf, t_point sxp, t_point bxp);
-static void	draw_line_move_y2(t_fdf *fdf, t_point syp, t_point byp);
-
-void	draw_line_move_x(t_fdf *fdf, t_point p1, t_point p2)
+void	draw_one_point(t_fdf *fdf, t_map *map, int r, int c)
 {
-	t_point	sxp;
-	t_point	bxp;
-
-	if (p1.rx2d < p2.rx2d)
+	if (in_window(fdf, map->map[r][c]) == TRUE)
 	{
-		sxp = p1;
-		bxp = p2;
+		if (fdf->color_mode == 0)
+			mlx_pixel_put_at_mem(fdf, map->map[r][c].rx2d,
+				map->map[r][c].ry2d, map->map[r][c].color.color);
+		else
+			mlx_pixel_put_at_mem(fdf, map->map[r][c].rx2d,
+				map->map[r][c].ry2d,
+				fdf->contour_color[(int)(map->map[r][c].z
+					- map->smallest_z)].color);
 	}
-	else
-	{
-		sxp = p2;
-		bxp = p1;
-	}
-	draw_line_move_x2(fdf, sxp, bxp);
 }
 
-static void	draw_line_move_x2(t_fdf *fdf, t_point sxp, t_point bxp)
+void	draw_case5(t_fdf *fdf, t_map *map, int r, int c)
 {
-	t_color	*color_box;
-	t_point	*point_box;
-	int		idx;
-	int		np;
-
-	np = bxp.rx2d - sxp.rx2d - 1;
-	if (fdf->color_mode == 0)
-		color_box = calc_color(sxp.color, bxp.color, np);
-	else
-		color_box = calc_color(fdf->contour_color[(int)(sxp.z - fdf->map_ptr->smallest_z)], fdf->contour_color[(int)(bxp.z - fdf->map_ptr->smallest_z)], np);
-	if (color_box == T_NULL)
+	r = map->row;
+	while (--r >= 0)
 	{
-		free_2d_array((void *)fdf->map_ptr->map);
-		free(fdf->contour_color);
-		err_msg("malloc error!", 1, FALSE);
+		c = map->col;
+		while (--c > 0)
+		{
+			draw_one_point(fdf, map, r, c);
+			if (should_draw_line(fdf, map->map[r][c], map->map[r][c - 1]))
+				draw_line(fdf, map->map[r][c], map->map[r][c - 1]);
+			if (r > 0)
+			{
+				if (should_draw_line(fdf, map->map[r][c], map->map[r - 1][c]))
+					draw_line(fdf, map->map[r][c], map->map[r - 1][c]);
+				if (!is_flat(map->map[r][c], map->map[r][c - 1],
+					map->map[r - 1][c], map->map[r - 1][c - 1]))
+					draw_line_diagonal(fdf, map, r - 1, c - 1);
+			}
+		}
+		if (r > 0)
+		{
+			if (should_draw_line(fdf, map->map[r][c], map->map[r - 1][c]))
+				draw_line(fdf, map->map[r][c], map->map[r - 1][c]);
+		}
 	}
-	point_box = (t_point *)malloc(sizeof(t_point) * np);
-	if (point_box == T_NULL)
-	{
-		free_2d_array((void *)fdf->map_ptr->map);
-		free(fdf->contour_color);
-		free(color_box);
-		err_msg("malloc error!", 1, FALSE);
-	}
-	idx = -1;
-	while (++idx < np)
-	{
-		point_box[idx].rx2d = sxp.rx2d + 1 + idx;
-		point_box[idx].ry2d = (int)(((double)(bxp.ry2d - sxp.ry2d) / (bxp.rx2d - sxp.rx2d))
-				* (point_box[idx].rx2d - bxp.rx2d) + bxp.ry2d + 0.5);
-	}
-	mlx_pixels_put_at_mem(fdf, point_box, color_box, np);
-	free(color_box);
-	free(point_box);
 }
 
-void	draw_line_move_y(t_fdf *fdf, t_point p1, t_point p2)
+void	draw_case6(t_fdf *fdf, t_map *map, int r, int c)
 {
-	t_point	syp;
-	t_point	byp;
-
-	if (p1.ry2d < p2.ry2d)
+	c = map->col;
+	while (--c >= 0)
 	{
-		syp = p1;
-		byp = p2;
+		r = -1;
+		while (++r < map->row - 1)
+		{
+			draw_one_point(fdf, map, r, c);
+			if (should_draw_line(fdf, map->map[r][c], map->map[r + 1][c]))
+				draw_line(fdf, map->map[r][c], map->map[r + 1][c]);
+			if (c > 0)
+			{
+				if (should_draw_line(fdf, map->map[r][c], map->map[r][c - 1]))
+					draw_line(fdf, map->map[r][c], map->map[r][c - 1]);
+				if (!is_flat(map->map[r][c], map->map[r + 1][c],
+					map->map[r][c - 1], map->map[r + 1][c - 1]))
+					draw_line_diagonal(fdf, map, r, c - 1);
+			}
+		}
+		if (c > 0)
+		{
+			if (should_draw_line(fdf, map->map[r][c], map->map[r][c - 1]))
+				draw_line(fdf, map->map[r][c], map->map[r][c - 1]);
+		}
 	}
-	else
-	{
-		syp = p2;
-		byp = p1;
-	}
-	draw_line_move_y2(fdf, syp, byp);
 }
 
-static void	draw_line_move_y2(t_fdf *fdf, t_point syp, t_point byp)
+void	draw_case7(t_fdf *fdf, t_map *map, int r, int c)
 {
-	t_color	*color_box;
-	t_point	*point_box;
-	int		idx;
-	int		np;
+	r = -1;
+	while (++r < map->row)
+	{
+		c = -1;
+		while (++c < map->col - 1)
+		{
+			draw_one_point(fdf, map, r, c);
+			if (should_draw_line(fdf, map->map[r][c], map->map[r][c + 1]))
+				draw_line(fdf, map->map[r][c], map->map[r][c + 1]);
+			if (r < map->row - 1)
+			{
+				if (should_draw_line(fdf, map->map[r][c], map->map[r + 1][c]))
+					draw_line(fdf, map->map[r][c], map->map[r + 1][c]);
+				if (!is_flat(map->map[r][c], map->map[r][c + 1],
+					map->map[r + 1][c], map->map[r + 1][c + 1]))
+					draw_line_diagonal(fdf, map, r, c);
+			}
+		}
+		if (r < map->row - 1)
+		{
+			if (should_draw_line(fdf, map->map[r][c], map->map[r + 1][c]))
+				draw_line(fdf, map->map[r][c], map->map[r + 1][c]);
+		}
+	}
+}
 
-	np = byp.ry2d - syp.ry2d - 1;
-	if (fdf->color_mode == 0)
-		color_box = calc_color(syp.color, byp.color, np);
-	else
-		color_box = calc_color(fdf->contour_color[(int)(syp.z - fdf->map_ptr->smallest_z)], fdf->contour_color[(int)(byp.z - fdf->map_ptr->smallest_z)], np);
-	if (color_box == T_NULL)
+void	draw_case8(t_fdf *fdf, t_map *map, int r, int c)
+{
+	c = -1;
+	while (++c < map->col)
 	{
-		free_2d_array((void *)fdf->map_ptr->map);
-		free(fdf->contour_color);
-		err_msg("malloc error!", 1, FALSE);
+		r = map->row;
+		while (--r > 0)
+		{
+			draw_one_point(fdf, map, r, c);
+			if (should_draw_line(fdf, map->map[r][c], map->map[r - 1][c]))
+				draw_line(fdf, map->map[r][c], map->map[r - 1][c]);
+			if (c < map->col - 1)
+			{
+				if (should_draw_line(fdf, map->map[r][c], map->map[r][c + 1]))
+					draw_line(fdf, map->map[r][c], map->map[r][c + 1]);
+				if (!is_flat(map->map[r][c], map->map[r][c + 1],
+					map->map[r - 1][c], map->map[r - 1][c + 1]))
+					draw_line_diagonal(fdf, map, r - 1, c);
+			}
+		}
+		if (c < map->col - 1)
+		{
+			if (should_draw_line(fdf, map->map[r][c], map->map[r][c + 1]))
+				draw_line(fdf, map->map[r][c], map->map[r][c + 1]);
+		}
 	}
-	point_box = (t_point *)malloc(sizeof(t_point) * np);
-	if (point_box == T_NULL)
-	{
-		free_2d_array((void *)fdf->map_ptr->map);
-		free(fdf->contour_color);
-		free(color_box);
-		err_msg("malloc error!", 1, FALSE);
-	}
-	idx = -1;
-	while (++idx < np)
-	{
-		point_box[idx].ry2d = syp.ry2d + 1 + idx;
-		point_box[idx].rx2d = (int)(((double)(byp.rx2d - syp.rx2d) / (byp.ry2d - syp.ry2d))
-				* (point_box[idx].ry2d - byp.ry2d) + byp.rx2d + 0.5);
-	}
-	mlx_pixels_put_at_mem(fdf, point_box, color_box, np);
-	free(color_box);
-	free(point_box);
 }

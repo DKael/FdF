@@ -6,11 +6,18 @@
 /*   By: hyungdki <hyungdki@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/26 19:48:23 by hyungdki          #+#    #+#             */
-/*   Updated: 2023/06/26 21:10:53 by hyungdki         ###   ########.fr       */
+/*   Updated: 2023/07/25 14:24:28 by hyungdki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "fdf.h"
+
+static t_bool	draw_line_diagonal_con1(int z00, int z01, int z10, int z11);
+static t_bool	draw_line_diagonal_con2(int z00, int z01, int z10, int z11);
+static t_bool	draw_line_diagonal_con3(int z00, int z01, int z10, int z11);
+extern t_bool	draw_line_diagonal_con4(int z00, int z01, int z10, int z11);
+extern t_bool	draw_line_diagonal_con5(int z00, int z01, int z10, int z11);
+extern t_bool	draw_line_diagonal_con6(int z00, int z01, int z10, int z11);
 
 void	draw_line_diagonal(t_fdf *fdf, t_map *map, int r, int c)
 {

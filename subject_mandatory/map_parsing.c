@@ -6,13 +6,19 @@
 /*   By: hyungdki <hyungdki@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/26 19:35:35 by hyungdki          #+#    #+#             */
-/*   Updated: 2023/06/27 13:10:06 by hyungdki         ###   ########.fr       */
+/*   Updated: 2023/07/25 14:14:34 by hyungdki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "fdf.h"
 
-t_map	map_parsing1(char **argv)
+static void	map_parsing2(t_map *map, char **argv);
+static void	map_parsing3(t_map *map, char **split_result, int *r_idx);
+static void	mp_make_row(t_map *map, int *r_idx, int s_idx, char **split_result);
+static void	mp_make_row_color(t_map *map, int *r_idx,
+				int s_idx, char **s_result);
+
+t_map	map_parsing(char **argv)
 {
 	t_map	map;
 	char	*buffer;

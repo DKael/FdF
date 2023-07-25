@@ -6,7 +6,7 @@
 /*   By: hyungdki <hyungdki@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/26 19:35:35 by hyungdki          #+#    #+#             */
-/*   Updated: 2023/06/28 09:55:25 by hyungdki         ###   ########.fr       */
+/*   Updated: 2023/07/25 17:38:09 by hyungdki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,8 @@
 static void	map_parsing2(t_map *map, char **argv);
 static void	map_parsing3(t_map *map, char **split_result, int *r_idx);
 static void	mp_make_row(t_map *map, int *r_idx, int s_idx, char **split_result);
-static void	mp_make_row_color(t_map *map, int *r_idx, int s_idx, char **s_result);
+static void	mp_make_row_color(t_map *map,
+				int *r_idx, int s_idx, char **s_result);
 
 t_map	map_parsing(char **argv)
 {
@@ -131,7 +132,8 @@ static void	mp_make_row(t_map *map, int *r_idx, int s_idx, char **split_result)
 	free_2d_array((void **)split_result);
 }
 
-static void	mp_make_row_color(t_map *map, int *r_idx, int s_idx, char **s_result)
+static void	mp_make_row_color(t_map *map,
+		int *r_idx, int s_idx, char **s_result)
 {
 	char	**split_color;
 

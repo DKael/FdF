@@ -6,7 +6,7 @@
 /*   By: hyungdki <hyungdki@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/30 17:58:15 by hyungdki          #+#    #+#             */
-/*   Updated: 2023/07/04 16:39:51 by hyungdki         ###   ########.fr       */
+/*   Updated: 2023/07/25 14:15:18 by hyungdki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,25 +90,8 @@ typedef struct s_fdf
 // draw_diagonal1.c
 void			draw_line_diagonal(t_fdf *fdf, t_map *map, int r, int c);
 t_bool			is_flat(t_point p1, t_point p2, t_point p3, t_point p4);
-t_bool			draw_line_diagonal_con1(int z00, int z01, int z10, int z11);
-t_bool			draw_line_diagonal_con2(int z00, int z01, int z10, int z11);
-t_bool			draw_line_diagonal_con3(int z00, int z01, int z10, int z11);
-// draw_diagonal2.c
-t_bool			draw_line_diagonal_con4(int z00, int z01, int z10, int z11);
-t_bool			draw_line_diagonal_con5(int z00, int z01, int z10, int z11);
-t_bool			draw_line_diagonal_con6(int z00, int z01, int z10, int z11);
 //draw1.c
 void			draw_line(t_fdf *fdf, t_point p1, t_point p2);
-void			draw_vertical_line(t_fdf *fdf, t_point p1, t_point p2);
-void			draw_horizontal_line(t_fdf *fdf, t_point p1, t_point p2);
-void			draw_line_slope_abs1(t_fdf *fdf, t_point p1, t_point p2);
-void			draw_line_slope_abs2(t_fdf *fdf, t_point sxp,
-					t_point bxp, int y);
-//draw2.c
-void			draw_line_move_x1(t_fdf *fdf, t_point p1, t_point p2);
-void			draw_line_move_x2(t_fdf *fdf, t_point sxp, t_point bxp);
-void			draw_line_move_y1(t_fdf *fdf, t_point p1, t_point p2);
-void			draw_line_move_y2(t_fdf *fdf, t_point syp, t_point byp);
 //draw3.c
 void			mlx_pixel_put_at_mem(t_fdf *fdf, int x, int y, int color);
 t_color			*calc_color(t_point sp, t_point bp, int np);
@@ -128,13 +111,7 @@ void			calc_win_size(t_map *map);
 void			enlarge_image(t_map *map);
 void			draw(t_fdf *fdf, t_map *map);
 // map_parsing.c
-t_map			map_parsing1(char **argv);
-void			map_parsing2(t_map *map, char **argv);
-void			map_parsing3(t_map *map, char **split_result, int *r_idx);
-void			mp_make_row(t_map *map, int *r_idx,
-					int s_idx, char **split_result);
-void			mp_make_row_color(t_map *map, int *r_idx,
-					int s_idx, char **s_result);
+t_map			map_parsing(char **argv);
 // util.c
 void			free_2d_array(void **array);
 unsigned int	hex_str_to_uint(char *str_color);

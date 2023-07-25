@@ -6,7 +6,7 @@
 /*   By: hyungdki <hyungdki@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/26 20:27:35 by hyungdki          #+#    #+#             */
-/*   Updated: 2023/06/27 13:44:05 by hyungdki         ###   ########.fr       */
+/*   Updated: 2023/07/25 14:13:02 by hyungdki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ void	fdf1(char **argv)
 	t_map	map;
 	t_fdf	fdf;
 
-	map = map_parsing1(argv);
+	map = map_parsing(argv);
 	convert_point(&map);
 	calc_win_size(&map);
 	fdf_init(&fdf, &map);
