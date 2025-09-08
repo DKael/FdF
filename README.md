@@ -72,7 +72,7 @@ make bonus  # 보너스 기능 포함 빌드
 
 ---
 
-## 7️⃣ 동작 영상
+## 8️⃣ 동작 영상
 ### pyramide.fdf
 https://github.com/user-attachments/assets/83e4dc4e-aa18-4a2e-baa8-f87b53f6d466
 
