@@ -1,4 +1,4 @@
-# 🌄 FdF Project
+# fdf
 
 ## 1️⃣ 프로젝트 소개
 
