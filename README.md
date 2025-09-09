@@ -96,7 +96,10 @@ https://github.com/user-attachments/assets/7a98ecae-f931-48c0-8e42-9b17b0bc451d
 
 ## 9️⃣ 기술 스택
 	•	언어: C
+	•	운영체제/환경: Unix/Linux
+	•	빌드 도구: GNU Make
+	•	버전관리 도구: Git
+	•	Coding Conventions: Norminette
 	•	그래픽스 라이브러리: minilibx (X11 기반)
 	•	알고리즘: Bresenham’s line algorithm, 선형 보간(gradient), 행렬 변환
-	•	개발 환경: Unix/Linux, Makefile 기반 자동 빌드
 	•	추가 구현: 이벤트 루프, double buffering, 색상 보간 로직
